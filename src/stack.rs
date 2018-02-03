@@ -11,7 +11,7 @@ impl<T> Stack<T> {
     }
 
     pub fn peek(&self) -> Option<T> {
-        if self.size() == 0 {
+        if self.is_empty()  {
             None
         } else {
             unsafe {
@@ -21,7 +21,7 @@ impl<T> Stack<T> {
     }
 
     pub fn pop(&mut self) -> Option<T> {
-        if self.size() == 0 {
+        if self.is_empty() {
             None
         } else {
             let last_index = self.size() - 1;
@@ -35,6 +35,14 @@ impl<T> Stack<T> {
 
     pub fn size(&self) -> usize {
         self.entry.len()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.size() == 0
+    }
+
+    pub fn clear(&mut self) {
+        self.entry.clear()
     }
 
     pub fn from(vec : Vec<T>) -> Stack<T> {

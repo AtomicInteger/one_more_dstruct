@@ -10,6 +10,16 @@ impl<T> Stack<T> {
         self.entry.push(value)
     }
 
+    pub fn peek(&self) -> Option<T> {
+        if self.size() == 0 {
+            None
+        } else {
+            unsafe {
+                Some(ptr::read(self.entry.get(self.size() - 1).unwrap()))
+            }
+        }
+    }
+
     pub fn pop(&mut self) -> Option<T> {
         if self.size() == 0 {
             None

@@ -14,6 +14,13 @@ mod tests {
     }
 
     #[test]
+    fn peek_stack() {
+        let stack = Stack::from(vec!(1, 2, 5));
+        assert_eq!(stack.peek().unwrap(), 5);
+        assert_eq!(stack.size(), 3);
+    }
+
+    #[test]
     fn pop_stack() {
         let mut stack = Stack::from(vec!(1, 2, 3));
         assert_eq!(stack.pop().unwrap(), 3);

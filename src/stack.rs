@@ -46,10 +46,10 @@ impl<T> Stack<T> {
     }
 
     pub fn from(vec : Vec<T>) -> Stack<T> {
-        Stack { entry : vec}
+        Stack { entry : vec }
     }
 
     pub fn new() -> Stack<T> {
-        Stack { entry : Vec::new()}
+        Stack { entry : Vec::new() }
     }
 }

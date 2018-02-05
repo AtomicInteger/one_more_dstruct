@@ -1,6 +1,7 @@
 extern crate core;
 
 use self::core::ptr;
+use vector_based_dstruct::VectorBasedDataStructure;
 
 pub struct Queue<T> {
     entry : Vec<T>
@@ -24,24 +25,23 @@ impl<T> Queue<T> {
             }
         }
     }
-
-    pub fn size(&self) -> usize {
-        self.entry.len()
-    }
-
-    pub fn is_empty(&self) -> bool {
-        self.size() == 0
-    }
-
-    pub fn clear(&mut self) {
-        self.entry.clear()
-    }
-
-    pub fn from(vec : Vec<T>) -> Queue<T> {
+}
+impl<T> From<Vec<T>> for Queue<T> {
+    fn from(vec: Vec<T>) -> Queue<T> {
         Queue { entry : vec }
     }
+}
 
-    pub fn new() -> Queue<T> {
+impl<T> VectorBasedDataStructure<T> for Queue<T> {
+    fn get_entry(&self) -> &Vec<T> {
+        &self.entry
+    }
+
+    fn get_mut_entry(&mut self) -> &mut Vec<T> {
+        &mut self.entry
+    }
+
+    fn new() -> Self {
         Queue { entry : Vec::new() }
     }
 }

@@ -1,9 +1,11 @@
 pub mod stack;
 pub mod queue;
+pub mod vector_based_dstruct;
 
 #[cfg(test)]
 mod tests {
 
+    use vector_based_dstruct::VectorBasedDataStructure;
     use stack::Stack;
     #[test]
     fn push_stack() {

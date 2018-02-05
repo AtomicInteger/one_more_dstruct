@@ -1,6 +1,7 @@
 extern crate core;
 
 use self::core::ptr;
+use vector_based_dstruct::VectorBasedDataStructure;
 
 pub struct Stack<T> {
     entry : Vec<T>
@@ -32,24 +33,23 @@ impl<T> Stack<T> {
             }
         }
     }
-
-    pub fn size(&self) -> usize {
-        self.entry.len()
-    }
-
-    pub fn is_empty(&self) -> bool {
-        self.size() == 0
-    }
-
-    pub fn clear(&mut self) {
-        self.entry.clear()
-    }
-
-    pub fn from(vec : Vec<T>) -> Stack<T> {
+}
+impl<T> From<Vec<T>> for Stack<T> {
+    fn from(vec: Vec<T>) -> Stack<T> {
         Stack { entry : vec }
     }
+}
 
-    pub fn new() -> Stack<T> {
+impl<T> VectorBasedDataStructure<T> for Stack<T> {
+    fn get_entry(&self) -> &Vec<T> {
+        &self.entry
+    }
+
+    fn get_mut_entry(&mut self) -> &mut Vec<T> {
+        &mut self.entry
+    }
+
+    fn new() -> Stack<T> {
         Stack { entry : Vec::new() }
     }
 }

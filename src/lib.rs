@@ -1,5 +1,6 @@
 pub mod stack;
 pub mod queue;
+pub mod list;
 pub mod vector_based_dstruct;
 
 #[cfg(test)]
@@ -101,6 +102,54 @@ mod tests {
         let empty_queue : Queue<i32> = Queue::new();
         assert_eq!(empty_queue.is_empty(), true);
         assert_eq!(empty_queue.size(), 0);
+    }
+
+    use list::List;
+    #[test]
+    fn push_list() {
+        let mut list = List::new();
+        list.push(1);
+        list.push(2);
+        list.push(3);
+        assert_eq!(list.size(), 3);
+    }
+
+    #[test]
+    fn pop_list() {
+        let mut list = List::from(vec!(1, 2, 3, 4));
+        assert_eq!(list.pop().unwrap(), 4);
+        assert_eq!(list.size(), 3);
+    }
+
+    #[test]
+    fn peek_list() {
+        let list = List::from(vec!(1, 2, 3, 4));
+        assert_eq!(list.peek().unwrap(), 4);
+        assert_eq!(list.size(), 4);
+    }
+
+    #[test]
+    fn unshift_list() {
+        let mut list = List::new();
+        list.unshift(1);
+        list.unshift(2);
+        list.unshift(3);
+        assert_eq!(list.size(), 3);
+    }
+
+    #[test]
+    fn shift_list() {
+        let mut list = List::from(vec!(1, 2, 3, 4));
+        assert_eq!(list.shift().unwrap(), 1);
+        assert_eq!(list.size(), 3);
+    }
+
+    #[test]
+    fn get_list() {
+        let list = List::from(vec!(1, 2, 3, 4));
+        assert_eq!(list.get(0).unwrap(), 1);
+        assert_eq!(list.get(2).unwrap(), 3);
+        assert_eq!(list.get(3).unwrap(), 4);
     }
 
     #[test]

@@ -1,6 +1,5 @@
 extern crate core;
 
-use self::core::ptr;
 use vector_based_dstruct::VectorBasedDataStructure;
 
 pub struct Stack<T> {
@@ -11,13 +10,11 @@ impl<T> Stack<T> {
         self.entry.push(value)
     }
 
-    pub fn peek(&self) -> Option<T> {
+    pub fn peek(&self) -> Option<&T> {
         if self.is_empty()  {
             None
         } else {
-            unsafe {
-                Some(ptr::read(self.entry.get(self.size() - 1).unwrap()))
-            }
+            self.entry.get(self.size() - 1)
         }
     }
 
@@ -26,11 +23,7 @@ impl<T> Stack<T> {
             None
         } else {
             let last_index = self.size() - 1;
-            unsafe {
-                let elem = ptr::read(self.entry.get(last_index).unwrap());
-                self.entry.remove(last_index);
-                Some(elem)
-            }
+            Some(self.entry.remove(last_index))
         }
     }
 }

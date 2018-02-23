@@ -22,7 +22,7 @@ mod tests {
     #[test]
     fn peek_stack() {
         let stack = Stack::from(vec!(1, 2, 5));
-        assert_eq!(stack.peek().unwrap(), 5);
+        assert_eq!(stack.peek().unwrap().to_owned(), 5);
         assert_eq!(stack.size(), 3);
     }
 

@@ -1,6 +1,5 @@
 extern crate core;
 
-use self::core::ptr;
 use vector_based_dstruct::VectorBasedDataStructure;
 
 pub struct List<T> {
@@ -17,31 +16,23 @@ impl<T> List<T> {
             None
         } else {
             let last_index = self.size() - 1;
-            unsafe {
-                let elem = ptr::read(self.entry.get(last_index).unwrap());
-                self.entry.remove(last_index);
-                Some(elem)
-            }
+            Some(self.entry.remove(last_index))
         }
     }
 
-    pub fn peek(&self) -> Option<T> {
+    pub fn peek(&self) -> Option<&T> {
         if self.is_empty()  {
             None
         } else {
-            unsafe {
-                Some(ptr::read(self.entry.get(self.size() - 1).unwrap()))
-            }
+            return self.entry.get(self.size() - 1);
         }
     }
 
-    pub fn get(&self, index : usize) -> Option<T> {
+    pub fn get(&self, index : usize) -> Option<&T> {
         if self.is_empty()  {
             None
         } else {
-            unsafe {
-                Some(ptr::read(self.entry.get(index).unwrap()))
-            }
+            return self.entry.get(index);
         }
     }
 
@@ -53,11 +44,7 @@ impl<T> List<T> {
         if self.is_empty() {
             None
         } else {
-            unsafe {
-                let elem = ptr::read(self.entry.get(0).unwrap());
-                self.entry.remove(0);
-                Some(elem)
-            }
+            Some(self.entry.remove(0))
         }
     }
 }

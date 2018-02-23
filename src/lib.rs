@@ -126,7 +126,7 @@ mod tests {
     #[test]
     fn peek_list() {
         let list = List::from(vec!(1, 2, 3, 4));
-        assert_eq!(list.peek().unwrap(), 4);
+        assert_eq!(list.peek().unwrap().to_owned(), 4);
         assert_eq!(list.size(), 4);
     }
 
@@ -149,9 +149,9 @@ mod tests {
     #[test]
     fn get_list() {
         let list = List::from(vec!(1, 2, 3, 4));
-        assert_eq!(list.get(0).unwrap(), 1);
-        assert_eq!(list.get(2).unwrap(), 3);
-        assert_eq!(list.get(3).unwrap(), 4);
+        assert_eq!(list.get(0).unwrap().to_owned(), 1);
+        assert_eq!(list.get(2).unwrap().to_owned(), 3);
+        assert_eq!(list.get(3).unwrap().to_owned(), 4);
     }
 
     use graph::Graph;

@@ -84,7 +84,7 @@ mod tests {
     #[test]
     fn peek_queue() {
         let queue = Queue::from(vec!(1, 2, 3));
-        assert_eq!(queue.peek().unwrap(), 3);
+        assert_eq!(queue.peek().unwrap().to_owned(), 3);
         assert_eq!(queue.size(), 3);
     }
 

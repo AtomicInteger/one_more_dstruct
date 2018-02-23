@@ -1,6 +1,5 @@
 extern crate core;
 
-use self::core::ptr;
 use vector_based_dstruct::VectorBasedDataStructure;
 
 pub struct Queue<T> {
@@ -16,13 +15,11 @@ impl<T> Queue<T> {
         self.entry.pop()
     }
 
-    pub fn peek(&self) -> Option<T> {
-        if self.is_empty()  {
+    pub fn peek(&self) -> Option<&T> {
+        if self.is_empty() {
             None
         } else {
-            unsafe {
-                Some(ptr::read(self.entry.get(self.size() - 1).unwrap()))
-            }
+            self.entry.get(self.size() - 1)
         }
     }
 }

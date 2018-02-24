@@ -5,6 +5,7 @@ pub mod vector_based_dstruct;
 pub mod graph;
 pub mod graph_node;
 pub mod tree;
+pub mod tree_node;
 
 #[cfg(test)]
 mod tests {
@@ -187,17 +188,17 @@ mod tests {
     }
 
     use tree::Tree;
-    use graph_node::GraphNode;
+    use tree_node::TreeNode;
     #[test]
     fn get_root_tree() {
-        let tree = Tree::new(GraphNode::new(0));
-        assert_eq!(tree.get_root().unwrap().value, 0);
+        let tree = Tree::new(0);
+        assert_eq!(tree.get_root().unwrap(), 0);
     }
 
     #[test]
     fn get_leaf_tree() {
-        let tree = Tree::new_with_children(GraphNode::new(1), (Some(GraphNode::new(0)), Some(GraphNode::new(2))));
-        assert_eq!(tree.get_leaf(), vec!(GraphNode::new(0), GraphNode::new(2)));
+        let tree = Tree::new_with_children(1, (Some(TreeNode::new(0)), Some(TreeNode::new(2))));
+        assert_eq!(tree.get_leaf(), vec!(TreeNode::new(0), TreeNode::new(2)));
     }
 
     #[test]

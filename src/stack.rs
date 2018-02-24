@@ -3,15 +3,16 @@ extern crate core;
 use vector_based_dstruct::VectorBasedDataStructure;
 
 pub struct Stack<T> {
-    entry : Vec<T>
+    entry: Vec<T>,
 }
+
 impl<T> Stack<T> {
     pub fn push(&mut self, value: T) {
         self.entry.push(value)
     }
 
     pub fn peek(&self) -> Option<&T> {
-        if self.is_empty()  {
+        if self.is_empty() {
             None
         } else {
             self.entry.get(self.size() - 1)
@@ -27,9 +28,10 @@ impl<T> Stack<T> {
         }
     }
 }
+
 impl<T> From<Vec<T>> for Stack<T> {
     fn from(vec: Vec<T>) -> Stack<T> {
-        Stack { entry : vec }
+        Stack { entry: vec }
     }
 }
 
@@ -43,6 +45,6 @@ impl<T> VectorBasedDataStructure<T> for Stack<T> {
     }
 
     fn new() -> Stack<T> {
-        Stack { entry : Vec::new() }
+        Stack { entry: Vec::new() }
     }
 }

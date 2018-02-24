@@ -3,11 +3,11 @@ extern crate core;
 use vector_based_dstruct::VectorBasedDataStructure;
 
 pub struct List<T> {
-    entry : Vec<T>
+    entry: Vec<T>,
 }
 
 impl<T> List<T> {
-    pub fn push(&mut self, value : T) {
+    pub fn push(&mut self, value: T) {
         self.entry.push(value)
     }
 
@@ -21,22 +21,22 @@ impl<T> List<T> {
     }
 
     pub fn peek(&self) -> Option<&T> {
-        if self.is_empty()  {
+        if self.is_empty() {
             None
         } else {
             return self.entry.get(self.size() - 1);
         }
     }
 
-    pub fn get(&self, index : usize) -> Option<&T> {
-        if self.is_empty()  {
+    pub fn get(&self, index: usize) -> Option<&T> {
+        if self.is_empty() {
             None
         } else {
             return self.entry.get(index);
         }
     }
 
-    pub fn unshift(&mut self, value : T) {
+    pub fn unshift(&mut self, value: T) {
         self.entry.insert(0, value)
     }
 
@@ -51,7 +51,7 @@ impl<T> List<T> {
 
 impl<T> From<Vec<T>> for List<T> {
     fn from(vec: Vec<T>) -> List<T> {
-        List { entry : vec }
+        List { entry: vec }
     }
 }
 
@@ -65,6 +65,6 @@ impl<T> VectorBasedDataStructure<T> for List<T> {
     }
 
     fn new() -> List<T> {
-        List { entry : Vec::new() }
+        List { entry: Vec::new() }
     }
 }

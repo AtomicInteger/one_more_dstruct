@@ -9,9 +9,9 @@ pub mod tree_node;
 
 #[cfg(test)]
 mod tests {
-
     use vector_based_dstruct::VectorBasedDataStructure;
     use stack::Stack;
+
     #[test]
     fn push_stack() {
         let mut stack = Stack::new();
@@ -23,14 +23,14 @@ mod tests {
 
     #[test]
     fn peek_stack() {
-        let stack = Stack::from(vec!(1, 2, 5));
+        let stack = Stack::from(vec![1, 2, 5]);
         assert_eq!(stack.peek().unwrap().to_owned(), 5);
         assert_eq!(stack.size(), 3);
     }
 
     #[test]
     fn clear_stack() {
-        let mut not_empty_stack = Stack::from(vec!(1, 2, 5));
+        let mut not_empty_stack = Stack::from(vec![1, 2, 5]);
         assert_eq!(not_empty_stack.is_empty(), false);
         not_empty_stack.clear();
         assert_eq!(not_empty_stack.is_empty(), true);
@@ -38,17 +38,17 @@ mod tests {
 
     #[test]
     fn is_empty_stack() {
-        let not_empty_stack = Stack::from(vec!(1, 2, 5));
+        let not_empty_stack = Stack::from(vec![1, 2, 5]);
         assert_eq!(not_empty_stack.is_empty(), false);
         assert_ne!(not_empty_stack.size(), 0);
-        let empty_stack : Stack<i32> = Stack::new();
+        let empty_stack: Stack<i32> = Stack::new();
         assert_eq!(empty_stack.is_empty(), true);
         assert_eq!(empty_stack.size(), 0);
     }
 
     #[test]
     fn pop_stack() {
-        let mut stack = Stack::from(vec!(1, 2, 3));
+        let mut stack = Stack::from(vec![1, 2, 3]);
         assert_eq!(stack.pop().unwrap(), 3);
         assert_eq!(stack.size(), 2);
     }
@@ -67,6 +67,7 @@ mod tests {
     }
 
     use queue::Queue;
+
     #[test]
     fn enqueue_queue() {
         let mut queue = Queue::new();
@@ -78,21 +79,21 @@ mod tests {
 
     #[test]
     fn dequeue_queue() {
-        let mut queue = Queue::from(vec!(1, 2, 3));
+        let mut queue = Queue::from(vec![1, 2, 3]);
         assert_eq!(queue.dequeue().unwrap(), 3);
         assert_eq!(queue.size(), 2);
     }
 
     #[test]
     fn peek_queue() {
-        let queue = Queue::from(vec!(1, 2, 3));
+        let queue = Queue::from(vec![1, 2, 3]);
         assert_eq!(queue.peek().unwrap().to_owned(), 3);
         assert_eq!(queue.size(), 3);
     }
 
     #[test]
     fn clear_queue() {
-        let mut not_empty_queue = Queue::from(vec!(1, 2, 5));
+        let mut not_empty_queue = Queue::from(vec![1, 2, 5]);
         assert_eq!(not_empty_queue.is_empty(), false);
         not_empty_queue.clear();
         assert_eq!(not_empty_queue.is_empty(), true);
@@ -100,15 +101,16 @@ mod tests {
 
     #[test]
     fn is_empty_queue() {
-        let not_empty_queue = Queue::from(vec!(1, 2, 5));
+        let not_empty_queue = Queue::from(vec![1, 2, 5]);
         assert_eq!(not_empty_queue.is_empty(), false);
         assert_ne!(not_empty_queue.size(), 0);
-        let empty_queue : Queue<i32> = Queue::new();
+        let empty_queue: Queue<i32> = Queue::new();
         assert_eq!(empty_queue.is_empty(), true);
         assert_eq!(empty_queue.size(), 0);
     }
 
     use list::List;
+
     #[test]
     fn push_list() {
         let mut list = List::new();
@@ -120,14 +122,14 @@ mod tests {
 
     #[test]
     fn pop_list() {
-        let mut list = List::from(vec!(1, 2, 3, 4));
+        let mut list = List::from(vec![1, 2, 3, 4]);
         assert_eq!(list.pop().unwrap(), 4);
         assert_eq!(list.size(), 3);
     }
 
     #[test]
     fn peek_list() {
-        let list = List::from(vec!(1, 2, 3, 4));
+        let list = List::from(vec![1, 2, 3, 4]);
         assert_eq!(list.peek().unwrap().to_owned(), 4);
         assert_eq!(list.size(), 4);
     }
@@ -143,20 +145,21 @@ mod tests {
 
     #[test]
     fn shift_list() {
-        let mut list = List::from(vec!(1, 2, 3, 4));
+        let mut list = List::from(vec![1, 2, 3, 4]);
         assert_eq!(list.shift().unwrap(), 1);
         assert_eq!(list.size(), 3);
     }
 
     #[test]
     fn get_list() {
-        let list = List::from(vec!(1, 2, 3, 4));
+        let list = List::from(vec![1, 2, 3, 4]);
         assert_eq!(list.get(0).unwrap().to_owned(), 1);
         assert_eq!(list.get(2).unwrap().to_owned(), 3);
         assert_eq!(list.get(3).unwrap().to_owned(), 4);
     }
 
     use graph::Graph;
+
     #[test]
     fn add_node_graph() {
         let mut graph = Graph::new(0);
@@ -189,6 +192,7 @@ mod tests {
 
     use tree::Tree;
     use tree_node::TreeNode;
+
     #[test]
     fn get_root_tree() {
         let tree = Tree::new(0);
@@ -198,7 +202,7 @@ mod tests {
     #[test]
     fn get_leaf_tree() {
         let tree = Tree::new_with_children(1, (Some(TreeNode::new(0)), Some(TreeNode::new(2))));
-        assert_eq!(tree.get_leaf(), vec!(TreeNode::new(0), TreeNode::new(2)));
+        assert_eq!(tree.get_leaf(), vec![TreeNode::new(0), TreeNode::new(2)]);
     }
 
     #[test]

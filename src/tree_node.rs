@@ -19,6 +19,16 @@ impl<T: Clone> TreeNode<T> {
             children: Box::from((None, None)),
         }
     }
+
+    pub fn new_with_children(
+        value: T,
+        children: (TreeNode<T>, TreeNode<T>)
+    ) -> TreeNode<T> {
+        TreeNode {
+            value : Some(value),
+            children : Box::from((Some(children.0), Some(children.1)))
+        }
+    }
 }
 
 impl<T: PartialEq> PartialEq for TreeNode<T> {

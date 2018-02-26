@@ -195,8 +195,8 @@ mod tests {
 
     #[test]
     fn get_root_tree() {
-        let tree = Tree::new(0);
-        assert_eq!(tree.get_root().unwrap(), 0);
+        let tree = Tree::new(TreeNode::new(0));
+        assert_eq!(tree.get_root().get_value().unwrap(), 0);
     }
 
     #[test]

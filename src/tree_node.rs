@@ -9,7 +9,7 @@ impl<T: Clone> TreeNode<T> {
         self.value.clone()
     }
 
-    pub fn children(&self) -> Vec<Option<TreeNode<T>>> {
+    pub fn get_children(&self) -> Vec<Option<TreeNode<T>>> {
         self.children.clone()
     }
 

@@ -1,18 +1,17 @@
 use tree_node::TreeNode;
 
 pub struct Tree<T> {
-    root: Option<T>,
-    children: Vec<Option<TreeNode<T>>>
+    root: TreeNode<T>
 }
 
 impl<T: Clone> Tree<T> {
-    pub fn get_root(&self) -> Option<T> {
+    pub fn get_root(&self) -> TreeNode<T> {
         self.root.clone()
     }
 
     pub fn get_leaves(&self) -> Vec<TreeNode<T>> {
         let mut inner_leaves = vec![];
-        for child in self.children.clone().iter() {
+        for child in self.get_root().get_children().clone().iter() {
             inner_leaves.extend(self.search_leaves(&child.clone().unwrap()).iter().cloned());
         }
         inner_leaves
@@ -20,9 +19,9 @@ impl<T: Clone> Tree<T> {
 
     pub fn nodes(&self, parent_node : TreeNode<T>) -> Vec<TreeNode<T>> {
         let mut all_nodes = vec![parent_node.clone()];
-        for node in parent_node.children().clone().iter() {
+        for node in parent_node.get_children().clone().iter() {
             all_nodes.push(node.clone().unwrap());
-            if !node.clone().unwrap().children().is_empty() {
+            if !node.clone().unwrap().get_children().is_empty() {
                 let inner_nodes = self.nodes(node.clone().unwrap());
                 all_nodes.extend(inner_nodes.iter().cloned());
             }
@@ -31,32 +30,26 @@ impl<T: Clone> Tree<T> {
     }
 
     pub fn get_children(&self) -> Vec<Option<TreeNode<T>>> {
-        self.children.clone()
+        self.get_root().get_children().clone()
     }
 
     fn search_leaves(&self, node: &TreeNode<T>) -> Vec<TreeNode<T>> {
         let mut result = vec![];
-        if node.children().is_empty() {
+        if node.get_children().is_empty() {
             return vec![node.to_owned()]
         }
-        for node_child in node.children() {
+        for node_child in node.get_children() {
             let inner_leaves = self.search_leaves(&node_child.unwrap());
             result.extend(inner_leaves.iter().cloned());
         }
         result
     }
 
-    pub fn new(root: T) -> Tree<T> {
-        Tree {
-            root: Some(root),
-            children: vec![]
-        }
+    pub fn new(root: TreeNode<T>) -> Tree<T> {
+        Tree { root }
     }
 
-    pub fn new_with_children(root: T, children: Vec<Option<TreeNode<T>>>) -> Tree<T> {
-        Tree {
-            root: Some(root),
-            children
-        }
+    pub fn new_with_children(root_value: T, children: Vec<Option<TreeNode<T>>>) -> Tree<T> {
+        Tree { root: TreeNode::new_with_children(root_value, children) }
     }
 }

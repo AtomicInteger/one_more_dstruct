@@ -200,24 +200,31 @@ mod tests {
     }
 
     #[test]
-    fn get_leaf_tree() {
-        let tree = Tree::new_with_children(1, (TreeNode::new(0), TreeNode::new(2)));
-        assert_eq!(tree.get_leaf(), vec![TreeNode::new(0), TreeNode::new(2)]);
+    fn get_leaves_tree() {
+        let tree = Tree::new_with_children(1, vec![Some(TreeNode::new(0)), Some(TreeNode::new(2))]);
+        assert_eq!(tree.get_leaves(), vec![TreeNode::new(0), TreeNode::new(2)]);
     }
 
     #[test]
     fn nodes_tree() {
-        let tree = Tree::new_with_children(1,
-            /*left child-----------------------------------------------------------*/  /*right child----*/
-            (TreeNode::new_with_children(0,/*left inner child*/ /*right inner child*/
-                                           (TreeNode::new(10),  TreeNode::new(-1))),   TreeNode::new(2)));
-        let parent_left_node = tree.get_children().0.unwrap();
-        let parent_right_node = tree.get_children().1.unwrap();
-        assert_eq!(tree.nodes(parent_left_node.clone()).len(), 2); // Elements: 10 and -1 => size = 2
-        assert!(tree.nodes(parent_left_node.clone()).contains(&TreeNode::new(10)));
-        assert!(tree.nodes(parent_left_node).contains(&TreeNode::new(-1)));
-        assert_eq!(tree.nodes(parent_right_node.clone()).len(), 1); // Element: 2 => size = 1
-        assert_eq!(tree.nodes(parent_right_node).get(0).unwrap().get_value().unwrap(), 2);
+        let tree = Tree::new_with_children(1, vec![
+                Some(TreeNode::new_with_children(0, vec![
+                        Some(TreeNode::new(10)),
+                        Some(TreeNode::new(-1))
+                    ])),
+                Some(TreeNode::new(2))
+        ]);
+        let mut all_nodes = vec![];
+        for node in tree.get_children() {
+            all_nodes.extend(tree.nodes(node.unwrap()).iter().cloned());
+        }
+        assert_eq!(all_nodes.len(), 4);
+        assert!(all_nodes.contains(&TreeNode::new(-1)));
+        assert!(all_nodes.contains(&TreeNode::new(10)));
+        assert!(all_nodes.contains(&TreeNode::new(2)));
+        assert!(all_nodes.contains(&TreeNode::new(0)));
+        assert_eq!(tree.nodes(tree.get_children()[0].clone().unwrap()).len(), 3);
+        assert!(!tree.nodes(tree.get_children()[0].clone().unwrap()).contains(&TreeNode::new(2)));
     }
 
     #[test]

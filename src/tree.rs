@@ -2,7 +2,7 @@ use tree_node::TreeNode;
 
 pub struct Tree<T> {
     root: Option<T>,
-    children: (Option<TreeNode<T>>, Option<TreeNode<T>>),
+    children: Vec<Option<TreeNode<T>>>
 }
 
 impl<T: Clone> Tree<T> {
@@ -10,58 +10,53 @@ impl<T: Clone> Tree<T> {
         self.root.clone()
     }
 
-    pub fn get_leaf(&self) -> Vec<TreeNode<T>> {
-        let mut left_leaves = self.search_leaf(&self.children.0.clone().unwrap());
-        let right_leaves = self.search_leaf(&self.children.1.clone().unwrap());
-        left_leaves.extend(right_leaves.iter().cloned());
-        left_leaves
+    pub fn get_leaves(&self) -> Vec<TreeNode<T>> {
+        let mut inner_leaves = vec![];
+        for child in self.children.clone().iter() {
+            inner_leaves.extend(self.search_leaves(&child.clone().unwrap()).iter().cloned());
+        }
+        inner_leaves
     }
 
     pub fn nodes(&self, parent_node : TreeNode<T>) -> Vec<TreeNode<T>> {
-        let mut all_nodes = vec![];
-        let left = &parent_node.children().0;
-        let right = &parent_node.children().1;
-        if left.is_none() && right.is_none() {
-            all_nodes.push(parent_node.clone());
-        } else {
-            let left_inner_nodes = self.nodes(left.clone().unwrap());
-            let right_inner_nodes = self.nodes(right.clone().unwrap());
-            all_nodes.extend(left_inner_nodes.iter().cloned());
-            all_nodes.extend(right_inner_nodes.iter().cloned());
+        let mut all_nodes = vec![parent_node.clone()];
+        for node in parent_node.children().clone().iter() {
+            all_nodes.push(node.clone().unwrap());
+            if !node.clone().unwrap().children().is_empty() {
+                let inner_nodes = self.nodes(node.clone().unwrap());
+                all_nodes.extend(inner_nodes.iter().cloned());
+            }
         }
         all_nodes
     }
 
-    pub fn get_children(&self) -> (Option<TreeNode<T>>, Option<TreeNode<T>>) {
+    pub fn get_children(&self) -> Vec<Option<TreeNode<T>>> {
         self.children.clone()
     }
 
-    fn search_leaf(&self, node: &TreeNode<T>) -> Vec<TreeNode<T>> {
+    fn search_leaves(&self, node: &TreeNode<T>) -> Vec<TreeNode<T>> {
         let mut result = vec![];
-        if node.children().0.is_none() && node.children().1.is_none() {
-            return vec![node.to_owned()];
+        if node.children().is_empty() {
+            return vec![node.to_owned()]
         }
-        let left_leaves = self.search_leaf(&node.children().0.unwrap());
-        let right_leaves = self.search_leaf(&node.children().0.unwrap());
-        result.extend(left_leaves.iter().cloned());
-        result.extend(right_leaves.iter().cloned());
+        for node_child in node.children() {
+            let inner_leaves = self.search_leaves(&node_child.unwrap());
+            result.extend(inner_leaves.iter().cloned());
+        }
         result
     }
 
     pub fn new(root: T) -> Tree<T> {
         Tree {
             root: Some(root),
-            children: (None, None),
+            children: vec![]
         }
     }
 
-    pub fn new_with_children(
-        root: T,
-        children: (TreeNode<T>, TreeNode<T>)
-    ) -> Tree<T> {
+    pub fn new_with_children(root: T, children: Vec<Option<TreeNode<T>>>) -> Tree<T> {
         Tree {
             root: Some(root),
-            children: (Some(children.0), Some(children.1))
+            children
         }
     }
 }

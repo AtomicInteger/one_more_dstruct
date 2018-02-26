@@ -1,7 +1,7 @@
 #[derive(Debug, Clone)]
 pub struct TreeNode<T> {
     value: Option<T>,
-    children: Box<(Option<TreeNode<T>>, Option<TreeNode<T>>)>,
+    children: Vec<Option<TreeNode<T>>>,
 }
 
 impl<T: Clone> TreeNode<T> {
@@ -9,24 +9,24 @@ impl<T: Clone> TreeNode<T> {
         self.value.clone()
     }
 
-    pub fn children(&self) -> (Option<TreeNode<T>>, Option<TreeNode<T>>) {
-        *self.children.clone()
+    pub fn children(&self) -> Vec<Option<TreeNode<T>>> {
+        self.children.clone()
     }
 
     pub fn new(value: T) -> TreeNode<T> {
         TreeNode {
             value: Some(value),
-            children: Box::from((None, None)),
+            children: vec![]
         }
     }
 
     pub fn new_with_children(
         value: T,
-        children: (TreeNode<T>, TreeNode<T>)
+        children: Vec<Option<TreeNode<T>>>
     ) -> TreeNode<T> {
         TreeNode {
             value : Some(value),
-            children : Box::from((Some(children.0), Some(children.1)))
+            children
         }
     }
 }

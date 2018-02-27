@@ -35,8 +35,8 @@ impl<T: Clone> TreeNode<T> {
     }
 }
 
-impl<T: PartialEq> PartialEq for TreeNode<T> {
+impl<T: PartialEq + Clone> PartialEq for TreeNode<T> {
     fn eq(&self, other: &TreeNode<T>) -> bool {
-        self.value == other.value
+        self.value == other.value && self.children == other.get_children()
     }
 }

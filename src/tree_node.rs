@@ -16,21 +16,18 @@ impl<T: Clone> TreeNode<T> {
     pub fn new(value: T) -> TreeNode<T> {
         TreeNode {
             value: Some(value),
-            children: vec![]
+            children: vec![],
         }
     }
 
-    pub fn new_with_children(
-        value: T,
-        children: Vec<TreeNode<T>>
-    ) -> TreeNode<T> {
+    pub fn new_with_children(value: T, children: Vec<TreeNode<T>>) -> TreeNode<T> {
         let mut wrapped_children = vec![];
         children.iter().for_each(|node| {
             wrapped_children.push(Some(node.clone()));
         });
         TreeNode {
-            value : Some(value),
-            children : wrapped_children
+            value: Some(value),
+            children: wrapped_children,
         }
     }
 }

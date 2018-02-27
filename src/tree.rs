@@ -1,7 +1,7 @@
 use tree_node::TreeNode;
 
 pub struct Tree<T> {
-    root: TreeNode<T>
+    root: TreeNode<T>,
 }
 
 impl<T: Clone> Tree<T> {
@@ -17,7 +17,7 @@ impl<T: Clone> Tree<T> {
         inner_leaves
     }
 
-    pub fn nodes(&self, parent_node : TreeNode<T>) -> Vec<TreeNode<T>> {
+    pub fn nodes(&self, parent_node: TreeNode<T>) -> Vec<TreeNode<T>> {
         let mut all_nodes = vec![parent_node.clone()];
         for node in parent_node.get_children().clone().iter() {
             all_nodes.push(node.clone().unwrap());
@@ -36,7 +36,7 @@ impl<T: Clone> Tree<T> {
     fn search_leaves(&self, node: &TreeNode<T>) -> Vec<TreeNode<T>> {
         let mut result = vec![];
         if node.get_children().is_empty() {
-            return vec![node.to_owned()]
+            return vec![node.to_owned()];
         }
         for node_child in node.get_children() {
             let inner_leaves = self.search_leaves(&node_child.unwrap());
@@ -50,6 +50,8 @@ impl<T: Clone> Tree<T> {
     }
 
     pub fn new_with_children(root_value: T, children: Vec<TreeNode<T>>) -> Tree<T> {
-        Tree { root: TreeNode::new_with_children(root_value, children) }
+        Tree {
+            root: TreeNode::new_with_children(root_value, children),
+        }
     }
 }

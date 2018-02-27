@@ -201,18 +201,18 @@ mod tests {
 
     #[test]
     fn get_leaves_tree() {
-        let tree = Tree::new_with_children(1, vec![Some(TreeNode::new(0)), Some(TreeNode::new(2))]);
+        let tree = Tree::new_with_children(1, vec![TreeNode::new(0), TreeNode::new(2)]);
         assert_eq!(tree.get_leaves(), vec![TreeNode::new(0), TreeNode::new(2)]);
     }
 
     #[test]
     fn nodes_tree() {
         let tree = Tree::new_with_children(1, vec![
-                Some(TreeNode::new_with_children(0, vec![
-                        Some(TreeNode::new(10)),
-                        Some(TreeNode::new(-1))
-                    ])),
-                Some(TreeNode::new(2))
+                TreeNode::new_with_children(0, vec![
+                        TreeNode::new(10),
+                        TreeNode::new(-1)
+                    ]),
+                TreeNode::new(2)
         ]);
         let mut all_nodes = vec![];
         for node in tree.get_children() {

@@ -49,7 +49,7 @@ impl<T: Clone> Tree<T> {
         Tree { root }
     }
 
-    pub fn new_with_children(root_value: T, children: Vec<Option<TreeNode<T>>>) -> Tree<T> {
+    pub fn new_with_children(root_value: T, children: Vec<TreeNode<T>>) -> Tree<T> {
         Tree { root: TreeNode::new_with_children(root_value, children) }
     }
 }

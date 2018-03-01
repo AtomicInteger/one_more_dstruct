@@ -264,6 +264,80 @@ mod tests {
     }
 
     #[test]
+    fn get_by_val_tree() {
+        let tree = Tree::new_with_children(
+            0,
+            vec![
+                TreeNode::new_with_children(
+                    1,
+                    vec![TreeNode::new(2), TreeNode::new(3), TreeNode::new(4)],
+                ),
+                TreeNode::new(12),
+                TreeNode::new_with_children(11, vec![TreeNode::new(76)]),
+            ],
+        );
+        assert_eq!(
+            tree.get_by_val(0).unwrap(),
+            TreeNode::new_with_children(
+                0,
+                vec![
+                    TreeNode::new_with_children(
+                        1,
+                        vec![TreeNode::new(2), TreeNode::new(3), TreeNode::new(4)],
+                    ),
+                    TreeNode::new(12),
+                    TreeNode::new_with_children(11, vec![TreeNode::new(76)]),
+                ]
+            )
+        );
+        assert_eq!(tree.get_by_val(12).unwrap(), TreeNode::new(12));
+        assert!(tree.get_by_val(12).unwrap().get_children().is_empty());
+        assert_eq!(
+            tree.get_by_val(11).unwrap(),
+            TreeNode::new_with_children(11, vec![TreeNode::new(76)])
+        );
+        assert_eq!(
+            tree.get_by_val(11).unwrap().get_children(),
+            vec![Some(TreeNode::new(76))]
+        );
+        assert!(tree.get_by_val(3).unwrap().get_children().is_empty());
+    }
+
+    #[test]
+    fn get_parent_tree() {
+        let tree = Tree::new_with_children(
+            0,
+            vec![
+                TreeNode::new_with_children(
+                    1,
+                    vec![TreeNode::new(2), TreeNode::new(3), TreeNode::new(4)],
+                ),
+                TreeNode::new(12),
+                TreeNode::new_with_children(11, vec![TreeNode::new(76)]),
+            ],
+        );
+        assert_eq!(tree.get_parent_by_val(1).get_value().unwrap(), 0);
+        assert_eq!(
+            tree.get_parent_by_val(2),
+            TreeNode::new_with_children(
+                1,
+                vec![TreeNode::new(2), TreeNode::new(3), TreeNode::new(4)]
+            )
+        );
+        assert_eq!(
+            tree.get_parent_by_val(76),
+            TreeNode::new_with_children(11, vec![TreeNode::new(76)])
+        );
+    }
+
+    #[test]
+    #[should_panic]
+    fn get_non_existence_parent_tree() {
+        let tree = Tree::new_with_children(0, vec![TreeNode::new(1), TreeNode::new(2)]);
+        tree.get_parent_by_val(1000); // Panic: there is no node with value = 1000
+    }
+
+    #[test]
     fn it_works() {
         assert_eq!(2 + 2, 4);
     }

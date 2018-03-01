@@ -4,7 +4,7 @@ pub struct Tree<T> {
     root: TreeNode<T>,
 }
 
-impl<T: Clone> Tree<T> {
+impl<T: Clone + PartialEq> Tree<T> {
     pub fn get_root(&self) -> TreeNode<T> {
         self.root.clone()
     }
@@ -43,6 +43,27 @@ impl<T: Clone> Tree<T> {
             result.extend(inner_leaves.iter().cloned());
         }
         result
+    }
+
+    pub fn get_by_val(&self, value: T) -> Option<TreeNode<T>> {
+        for node in self.nodes(self.get_root()) {
+            if node.get_value().unwrap() == value {
+                return Some(node);
+            }
+        }
+        None
+    }
+
+    pub fn get_parent_by_val(&self, val: T) -> TreeNode<T> {
+        for node in self.nodes(self.get_root()) {
+            if node.get_children()
+                .iter()
+                .any(|child| child.clone().unwrap().get_value().unwrap() == val)
+            {
+                return node.clone();
+            }
+        }
+        panic!("Cannot get node's parent!");
     }
 
     pub fn new(root: TreeNode<T>) -> Tree<T> {

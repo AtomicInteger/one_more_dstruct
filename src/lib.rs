@@ -338,6 +338,40 @@ mod tests {
     }
 
     #[test]
+    fn add_root_sub_tre() {
+        let mut tree = Tree::new(TreeNode::new(0));
+        let sub_tree = Tree::new(TreeNode::new(1));
+        assert_eq!(tree.get_children().len(), 0);
+        tree.add_sub_tree(sub_tree);
+        assert_eq!(tree.get_children().len(), 1);
+        assert_eq!(
+            tree.get_children()
+                .get(0)
+                .unwrap()
+                .clone()
+                .unwrap()
+                .get_value()
+                .unwrap(),
+            1
+        );
+        assert_eq!(tree.get_by_val(1).unwrap().get_value().unwrap(), 1);
+        let sub_tree = Tree::new(TreeNode::new(3));
+        tree.add_sub_tree(sub_tree);
+        assert_eq!(tree.get_children().len(), 2);
+        assert_eq!(
+            tree.get_children()
+                .get(1)
+                .unwrap()
+                .clone()
+                .unwrap()
+                .get_value()
+                .unwrap(),
+            3
+        );
+        assert_eq!(tree.get_by_val(3).unwrap().get_value().unwrap(), 3);
+    }
+
+    #[test]
     fn it_works() {
         assert_eq!(2 + 2, 4);
     }

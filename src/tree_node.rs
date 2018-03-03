@@ -13,6 +13,10 @@ impl<T: Clone> TreeNode<T> {
         self.children.clone()
     }
 
+    pub fn get_mut_children(&mut self) -> &mut Vec<Option<TreeNode<T>>> {
+        &mut self.children
+    }
+
     pub fn new(value: T) -> TreeNode<T> {
         TreeNode {
             value: Some(value),

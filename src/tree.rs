@@ -9,6 +9,10 @@ impl<T: Clone + PartialEq> Tree<T> {
         self.root.clone()
     }
 
+    pub fn get_mut_root(&mut self) -> &mut TreeNode<T> {
+        &mut self.root
+    }
+
     pub fn get_leaves(&self) -> Vec<TreeNode<T>> {
         let mut inner_leaves = vec![];
         for child in self.get_root().get_children().clone().iter() {
@@ -64,6 +68,12 @@ impl<T: Clone + PartialEq> Tree<T> {
             }
         }
         panic!("Cannot get node's parent!");
+    }
+
+    pub fn add_root_sub_tree(&mut self, sub_tree: Tree<T>) {
+        self.get_mut_root()
+            .get_mut_children()
+            .push(Some(sub_tree.get_root()));
     }
 
     pub fn new(root: TreeNode<T>) -> Tree<T> {

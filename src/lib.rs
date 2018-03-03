@@ -342,7 +342,7 @@ mod tests {
         let mut tree = Tree::new(TreeNode::new(0));
         let sub_tree = Tree::new(TreeNode::new(1));
         assert_eq!(tree.get_children().len(), 0);
-        tree.add_sub_tree(sub_tree);
+        tree.add_root_sub_tree(sub_tree);
         assert_eq!(tree.get_children().len(), 1);
         assert_eq!(
             tree.get_children()
@@ -356,7 +356,7 @@ mod tests {
         );
         assert_eq!(tree.get_by_val(1).unwrap().get_value().unwrap(), 1);
         let sub_tree = Tree::new(TreeNode::new(3));
-        tree.add_sub_tree(sub_tree);
+        tree.add_root_sub_tree(sub_tree);
         assert_eq!(tree.get_children().len(), 2);
         assert_eq!(
             tree.get_children()

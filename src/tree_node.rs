@@ -5,12 +5,12 @@ pub struct TreeNode<T> {
 }
 
 impl<T: Clone> TreeNode<T> {
-    pub fn get_value(&self) -> Option<T> {
-        self.value.clone()
+    pub fn get_value(&self) -> &Option<T> {
+        &self.value
     }
 
-    pub fn get_children(&self) -> Vec<TreeNode<T>> {
-        self.children.clone()
+    pub fn get_children(&self) -> &Vec<TreeNode<T>> {
+        &self.children
     }
 
     pub fn get_mut_children(&mut self) -> &mut Vec<TreeNode<T>> {
@@ -34,6 +34,6 @@ impl<T: Clone> TreeNode<T> {
 
 impl<T: PartialEq + Clone> PartialEq for TreeNode<T> {
     fn eq(&self, other: &TreeNode<T>) -> bool {
-        self.value == other.value && self.children == other.get_children()
+        self.value == other.value && self.children == other.get_children().to_vec()
     }
 }

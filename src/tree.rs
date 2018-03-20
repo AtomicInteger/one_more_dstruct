@@ -39,7 +39,7 @@ impl<T: Clone + PartialEq> Tree<T> {
 
     fn search_leaves(&self, node: &TreeNode<T>) -> Vec<TreeNode<T>> {
         let mut result = vec![];
-        if node.get_children().is_empty() {
+        if node.clone().get_children().is_empty() {
             return vec![node.to_owned()];
         }
         for node_child in node.get_children() {
@@ -51,7 +51,7 @@ impl<T: Clone + PartialEq> Tree<T> {
 
     pub fn get_by_val(&self, value: T) -> Option<TreeNode<T>> {
         for node in self.nodes(self.get_root()) {
-            if node.get_value().unwrap() == value {
+            if node.get_value().clone().unwrap() == value {
                 return Some(node);
             }
         }
@@ -62,7 +62,7 @@ impl<T: Clone + PartialEq> Tree<T> {
         for node in self.nodes(self.get_root()) {
             if node.get_children()
                 .iter()
-                .any(|child| child.clone().get_value().unwrap() == val)
+                .any(|child| child.get_value().clone().unwrap() == val)
             {
                 return node.clone();
             }

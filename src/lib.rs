@@ -297,7 +297,7 @@ mod tests {
             TreeNode::new_with_children(11, vec![TreeNode::new(76)])
         );
         assert_eq!(
-            tree.get_by_val(11).unwrap().get_children(),
+            tree.get_by_val(11).unwrap().get_children().to_vec(),
             vec![TreeNode::new(76)]
         );
         assert!(tree.get_by_val(3).unwrap().get_children().is_empty());
@@ -367,6 +367,14 @@ mod tests {
             3
         );
         assert_eq!(tree.get_by_val(3).unwrap().get_value().unwrap(), 3);
+    }
+
+    #[test]
+    fn check_children_reachability_tree_node() {
+        let mut tree_node = TreeNode::new_with_children(0, vec![TreeNode::new(1), TreeNode::new(2)]);
+        assert_eq!(tree_node.get_children().len(), 2);
+        tree_node.get_mut_children().push(TreeNode::new(3));
+        assert_eq!(tree_node.get_children().len(), 3);
     }
 
     #[test]

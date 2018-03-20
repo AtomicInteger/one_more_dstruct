@@ -16,7 +16,7 @@ impl<T: Clone + PartialEq> Tree<T> {
     pub fn get_leaves(&self) -> Vec<TreeNode<T>> {
         let mut inner_leaves = vec![];
         for child in self.get_root().get_children().clone().iter() {
-            inner_leaves.extend(self.search_leaves(&child.clone().unwrap()).iter().cloned());
+            inner_leaves.extend(self.search_leaves(&child.clone()).iter().cloned());
         }
         inner_leaves
     }
@@ -24,16 +24,16 @@ impl<T: Clone + PartialEq> Tree<T> {
     pub fn nodes(&self, parent_node: TreeNode<T>) -> Vec<TreeNode<T>> {
         let mut all_nodes = vec![parent_node.clone()];
         for node in parent_node.get_children().clone().iter() {
-            all_nodes.push(node.clone().unwrap());
-            if !node.clone().unwrap().get_children().is_empty() {
-                let inner_nodes = self.nodes(node.clone().unwrap());
+            all_nodes.push(node.clone());
+            if !node.clone().get_children().is_empty() {
+                let inner_nodes = self.nodes(node.clone());
                 all_nodes.extend(inner_nodes.iter().cloned());
             }
         }
         all_nodes
     }
 
-    pub fn get_children(&self) -> Vec<Option<TreeNode<T>>> {
+    pub fn get_children(&self) -> Vec<TreeNode<T>> {
         self.get_root().get_children().clone()
     }
 
@@ -43,7 +43,7 @@ impl<T: Clone + PartialEq> Tree<T> {
             return vec![node.to_owned()];
         }
         for node_child in node.get_children() {
-            let inner_leaves = self.search_leaves(&node_child.unwrap());
+            let inner_leaves = self.search_leaves(&node_child);
             result.extend(inner_leaves.iter().cloned());
         }
         result
@@ -62,7 +62,7 @@ impl<T: Clone + PartialEq> Tree<T> {
         for node in self.nodes(self.get_root()) {
             if node.get_children()
                 .iter()
-                .any(|child| child.clone().unwrap().get_value().unwrap() == val)
+                .any(|child| child.clone().get_value().unwrap() == val)
             {
                 return node.clone();
             }
@@ -73,7 +73,7 @@ impl<T: Clone + PartialEq> Tree<T> {
     pub fn add_root_sub_tree(&mut self, sub_tree: Tree<T>) {
         self.get_mut_root()
             .get_mut_children()
-            .push(Some(sub_tree.get_root()));
+            .push(sub_tree.get_root());
     }
 
     pub fn new(root: TreeNode<T>) -> Tree<T> {

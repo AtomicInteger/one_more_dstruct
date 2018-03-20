@@ -1,7 +1,7 @@
 #[derive(Debug, Clone)]
 pub struct TreeNode<T> {
     value: Option<T>,
-    children: Vec<Option<TreeNode<T>>>,
+    children: Vec<TreeNode<T>>,
 }
 
 impl<T: Clone> TreeNode<T> {
@@ -9,11 +9,11 @@ impl<T: Clone> TreeNode<T> {
         self.value.clone()
     }
 
-    pub fn get_children(&self) -> Vec<Option<TreeNode<T>>> {
+    pub fn get_children(&self) -> Vec<TreeNode<T>> {
         self.children.clone()
     }
 
-    pub fn get_mut_children(&mut self) -> &mut Vec<Option<TreeNode<T>>> {
+    pub fn get_mut_children(&mut self) -> &mut Vec<TreeNode<T>> {
         &mut self.children
     }
 
@@ -25,13 +25,9 @@ impl<T: Clone> TreeNode<T> {
     }
 
     pub fn new_with_children(value: T, children: Vec<TreeNode<T>>) -> TreeNode<T> {
-        let mut wrapped_children = vec![];
-        children.iter().for_each(|node| {
-            wrapped_children.push(Some(node.clone()));
-        });
         TreeNode {
             value: Some(value),
-            children: wrapped_children,
+            children,
         }
     }
 }

@@ -243,7 +243,7 @@ mod tests {
         );
         let mut all_nodes = vec![];
         for node in tree.get_children() {
-            all_nodes.extend(tree.nodes(node.unwrap()).iter().cloned());
+            all_nodes.extend(tree.nodes(node).iter().cloned());
         }
         assert_eq!(all_nodes.len(), 4);
         assert!(all_nodes.contains(&TreeNode::new(-1)));
@@ -253,13 +253,13 @@ mod tests {
             0,
             vec![TreeNode::new(10), TreeNode::new(-1)]
         )));
-        assert_eq!(tree.nodes(tree.get_children()[0].clone().unwrap()).len(), 3);
-        assert_eq!(tree.nodes(tree.get_children()[1].clone().unwrap()).len(), 1);
+        assert_eq!(tree.nodes(tree.get_children()[0].clone()).len(), 3);
+        assert_eq!(tree.nodes(tree.get_children()[1].clone()).len(), 1);
         assert_eq!(
-            tree.nodes(tree.get_children()[1].clone().unwrap()),
+            tree.nodes(tree.get_children()[1].clone()),
             vec![TreeNode::new(2)]
         );
-        assert!(!tree.nodes(tree.get_children()[0].clone().unwrap())
+        assert!(!tree.nodes(tree.get_children()[0].clone())
             .contains(&TreeNode::new(2)));
     }
 
@@ -298,7 +298,7 @@ mod tests {
         );
         assert_eq!(
             tree.get_by_val(11).unwrap().get_children(),
-            vec![Some(TreeNode::new(76))]
+            vec![TreeNode::new(76)]
         );
         assert!(tree.get_by_val(3).unwrap().get_children().is_empty());
     }
@@ -349,7 +349,6 @@ mod tests {
                 .get(0)
                 .unwrap()
                 .clone()
-                .unwrap()
                 .get_value()
                 .unwrap(),
             1
@@ -363,7 +362,6 @@ mod tests {
                 .get(1)
                 .unwrap()
                 .clone()
-                .unwrap()
                 .get_value()
                 .unwrap(),
             3

@@ -1,10 +1,12 @@
+use tree::Tree;
+
 #[derive(Debug, Clone)]
 pub struct TreeNode<T> {
     value: Option<T>,
     children: Vec<TreeNode<T>>,
 }
 
-impl<T: Clone> TreeNode<T> {
+impl<T: PartialEq + Clone> TreeNode<T> {
     pub fn get_value(&self) -> &Option<T> {
         &self.value
     }
@@ -29,6 +31,10 @@ impl<T: Clone> TreeNode<T> {
             value: Some(value),
             children,
         }
+    }
+
+    pub fn add_sub_tree(&mut self, sub_tree: Tree<T>) {
+        self.get_mut_children().push(sub_tree.get_owned_root());
     }
 }
 

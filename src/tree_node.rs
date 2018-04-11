@@ -1,6 +1,6 @@
 use tree::Tree;
 
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct TreeNode<T> {
     value: Option<T>,
     children: Vec<TreeNode<T>>,
@@ -35,11 +35,5 @@ impl<T: PartialEq + Clone> TreeNode<T> {
 
     pub fn add_sub_tree(&mut self, sub_tree: Tree<T>) {
         self.get_mut_children().push(sub_tree.get_owned_root());
-    }
-}
-
-impl<T: PartialEq + Clone> PartialEq for TreeNode<T> {
-    fn eq(&self, other: &TreeNode<T>) -> bool {
-        self.value == other.value && self.children == other.get_children().to_vec()
     }
 }

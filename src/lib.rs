@@ -251,7 +251,7 @@ mod tests {
         assert!(all_nodes.contains(&&TreeNode::new(2)));
         assert!(all_nodes.contains(&&TreeNode::new_with_children(
             0,
-            vec![TreeNode::new(10), TreeNode::new(-1)]
+            vec![TreeNode::new(10), TreeNode::new(-1)],
         )));
         assert_eq!(tree.nodes(&tree.get_children()[0]).len(), 3);
         assert_eq!(tree.nodes(&tree.get_children()[1]).len(), 1);
@@ -287,7 +287,7 @@ mod tests {
                     ),
                     TreeNode::new(12),
                     TreeNode::new_with_children(11, vec![TreeNode::new(76)]),
-                ]
+                ],
             )
         );
         assert_eq!(tree.get_by_val(12).unwrap(), &TreeNode::new(12));
@@ -321,7 +321,7 @@ mod tests {
             tree.get_parent_by_val(2),
             &TreeNode::new_with_children(
                 1,
-                vec![TreeNode::new(2), TreeNode::new(3), TreeNode::new(4)]
+                vec![TreeNode::new(2), TreeNode::new(3), TreeNode::new(4)],
             )
         );
         assert_eq!(

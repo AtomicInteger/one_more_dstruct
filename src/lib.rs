@@ -182,12 +182,12 @@ mod tests {
     }
 
     #[test]
-    fn add_lines_graph() {
+    fn add_line_graph_node() {
         let mut graph = Graph::new(0);
         graph.add_node(1);
         graph.add_node(2);
-        graph.add_line(1, 2);
-        assert_eq!(graph.find(1).unwrap().find_by_value(2).unwrap().value, 2);
+        graph.find_mut(1).unwrap().add_line(2);
+        assert_eq!(graph.find(1).unwrap().find_by_value(2).unwrap().get_value().clone(), 2);
     }
 
     use tree::Tree;

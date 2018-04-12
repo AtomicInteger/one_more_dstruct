@@ -1,10 +1,26 @@
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 pub struct GraphNode<V> {
-    pub value: V,
-    pub lines: Vec<GraphNode<V>>,
+    value: V,
+    lines: Vec<GraphNode<V>>,
 }
 
-impl<V: Copy + PartialEq> GraphNode<V> {
+impl<V: Copy + PartialEq + Clone> GraphNode<V> {
+    pub fn get_value(&self) -> &V {
+        &self.value
+    }
+
+    pub fn get_mut_value(&mut self) -> &mut V {
+        &mut self.value
+    }
+
+    pub fn get_lines(&self) -> &Vec<GraphNode<V>> {
+        &self.lines
+    }
+
+    pub fn get_mut_lines(&mut self) -> &mut Vec<GraphNode<V>> {
+        &mut self.lines
+    }
+
     pub fn new(value: V) -> GraphNode<V> {
         GraphNode {
             value,
@@ -12,22 +28,16 @@ impl<V: Copy + PartialEq> GraphNode<V> {
         }
     }
 
-    pub fn add_line(&mut self, node: GraphNode<V>) {
-        self.lines.push(node);
+    pub fn add_line(&mut self, node_value: V) {
+        self.lines.push(GraphNode::new(node_value));
     }
 
-    pub fn find_by_value(&mut self, value: V) -> Option<GraphNode<V>> {
+    pub fn find_by_value(&self, value: V) -> Option<&GraphNode<V>> {
         for node in self.lines.iter() {
             if node.value == value {
-                return Some(node.clone());
+                return Some(node);
             }
         }
         None
-    }
-}
-
-impl<V: PartialEq> PartialEq for GraphNode<V> {
-    fn eq(&self, other: &GraphNode<V>) -> bool {
-        self.value == other.value
     }
 }

@@ -13,35 +13,28 @@ impl<T: PartialEq + Copy> Graph<T> {
 
     pub fn remove_node(&mut self, value: T) {
         for (index, node) in self.node_list.clone().iter().enumerate() {
-            if node.value == value {
+            if node.get_value().clone() == value {
                 self.node_list.remove(index);
             }
         }
     }
 
-    pub fn find(&self, value: T) -> Option<GraphNode<T>> {
+    pub fn find(&self, value: T) -> Option<&GraphNode<T>> {
         for node in self.node_list.iter() {
-            if node.value == value {
-                return Some(node.clone());
+            if node.get_value().clone() == value {
+                return Some(node);
             }
         }
         None
     }
 
-    fn replace_node(&mut self, value: T, new_node: GraphNode<T>) {
-        for (index, node) in self.node_list.clone().iter().enumerate() {
-            if node.value == value {
-                self.node_list[index] = new_node;
-                break;
+    pub fn find_mut(&mut self, value: T) -> Option<&mut GraphNode<T>> {
+        for node in self.node_list.iter_mut() {
+            if node.get_value().clone() == value {
+                return Some(node);
             }
         }
-    }
-
-    pub fn add_line(&mut self, val1: T, val2: T) {
-        let mut start_node = self.find(val1).unwrap();
-        let end_node = self.find(val2).unwrap();
-        start_node.add_line(end_node);
-        self.replace_node(start_node.value, start_node);
+        None
     }
 
     pub fn size(&self) -> usize {

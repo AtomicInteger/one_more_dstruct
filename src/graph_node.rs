@@ -4,7 +4,7 @@ pub struct GraphNode<V> {
     lines: Vec<GraphNode<V>>,
 }
 
-impl<V: Copy + PartialEq + Clone> GraphNode<V> {
+impl<V: PartialEq + Clone> GraphNode<V> {
     pub fn get_value(&self) -> &V {
         &self.value
     }

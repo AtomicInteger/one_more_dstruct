@@ -6,7 +6,7 @@ pub struct Graph<T> {
     node_list: Vec<GraphNode<T>>,
 }
 
-impl<T: PartialEq + Copy> Graph<T> {
+impl<T: PartialEq + Clone> Graph<T> {
     pub fn add_node(&mut self, value: T) {
         self.node_list.push(GraphNode::new(value))
     }

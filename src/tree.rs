@@ -58,6 +58,21 @@ impl<T: Clone + PartialEq> Tree<T> {
         None
     }
 
+    pub fn get_mut_by_val(&mut self, value: T) -> Option<&mut TreeNode<T>> {
+        if self.get_root().get_value().clone().unwrap() == value {
+            return Some(self.get_mut_root());
+        }
+        for node in self.get_mut_root().get_mut_children().iter_mut() {
+            if node.get_value().clone().unwrap() == value {
+                return Some(node);
+            }
+            if !node.get_children().is_empty() {
+                return node.get_mut_by_val(value);
+            }
+        }
+        None
+    }
+
     pub fn get_parent_by_val(&self, val: T) -> &TreeNode<T> {
         for node in self.nodes(self.get_root()) {
             if node.get_children().iter().any(|child| child.get_value().clone().unwrap() == val) {

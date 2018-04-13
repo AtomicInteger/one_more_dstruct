@@ -389,6 +389,17 @@ mod tests {
     }
 
     #[test]
+    fn check_get_by_val_mutability_tree() {
+        let mut tree = Tree::new_with_children(0, vec![TreeNode::new_with_children(1, vec![TreeNode::new(3)]), TreeNode::new(2)]);
+        assert_eq!(tree.get_by_val(1).unwrap().get_children().len(), 1);
+        tree.get_mut_by_val(1).unwrap().get_mut_children().push(TreeNode::new(4));
+        assert_eq!(tree.get_by_val(1).unwrap().get_children().len(), 2);
+        assert_eq!(tree.get_by_val(0).unwrap().get_children().len(), 2);
+        tree.get_mut_by_val(0).unwrap().get_mut_children().clear();
+        assert_eq!(tree.get_by_val(0).unwrap().get_children().len(), 0);
+    }
+
+    #[test]
     fn it_works() {
         assert_eq!(2 + 2, 4);
     }

@@ -400,6 +400,26 @@ mod tests {
     }
 
     #[test]
+    fn get_mut_parent_tree() {
+        let mut tree = Tree::new_with_children(0, vec![TreeNode::new(1), TreeNode::new(2)]);
+        assert_eq!(tree.get_children().len(), 2);
+        tree.get_mut_parent_by_val(&1).get_mut_children().clear();
+        assert!(tree.get_children().is_empty())
+    }
+
+    #[test]
+    fn delete_node_tree() {
+        let mut tree = Tree::new_with_children(0, vec![TreeNode::new(1), TreeNode::new(2)]);
+        assert_eq!(tree.get_children().len(), 2);
+        assert!(tree.get_children().contains(&TreeNode::new(1)));
+        assert!(tree.get_children().contains(&TreeNode::new(2)));
+        tree.delete_node(2);
+        assert_eq!(tree.get_children().len(), 1);
+        assert!(tree.get_children().contains(&TreeNode::new(1)));
+        assert!(!tree.get_children().contains(&TreeNode::new(2)));
+    }
+
+    #[test]
     fn it_works() {
         assert_eq!(2 + 2, 4);
     }

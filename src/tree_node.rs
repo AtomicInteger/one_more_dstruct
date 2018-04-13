@@ -48,4 +48,14 @@ impl<T: PartialEq + Clone> TreeNode<T> {
         }
         None
     }
+
+    pub fn get_mut_parent_by_val(&mut self, value: &T) -> &mut TreeNode<T> {
+        if self.get_children().contains(&TreeNode::new(value.clone())) {
+            return self;
+        }
+        for child in self.get_mut_children().iter_mut() {
+            return child.get_mut_parent_by_val(&value);
+        }
+        panic!("Cannot get node's parent!");
+    }
 }

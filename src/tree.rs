@@ -51,7 +51,7 @@ impl<T: Clone + PartialEq> Tree<T> {
 
     pub fn get_by_val(&self, value: T) -> Option<&TreeNode<T>> {
         for node in self.nodes(self.get_root()) {
-            if node.get_value().clone().unwrap() == value {
+            if node.get_value() == &value {
                 return Some(node);
             }
         }
@@ -59,11 +59,11 @@ impl<T: Clone + PartialEq> Tree<T> {
     }
 
     pub fn get_mut_by_val(&mut self, value: T) -> Option<&mut TreeNode<T>> {
-        if self.get_root().get_value().clone().unwrap() == value {
+        if self.get_root().get_value() == &value {
             return Some(self.get_mut_root());
         }
         for node in self.get_mut_root().get_mut_children().iter_mut() {
-            if node.get_value().clone().unwrap() == value {
+            if node.get_value().clone() == value {
                 return Some(node);
             }
             if !node.get_children().is_empty() {
@@ -75,7 +75,7 @@ impl<T: Clone + PartialEq> Tree<T> {
 
     pub fn get_parent_by_val(&self, val: T) -> &TreeNode<T> {
         for node in self.nodes(self.get_root()) {
-            if node.get_children().iter().any(|child| child.get_value().clone().unwrap() == val) {
+            if node.get_children().iter().any(|child| child.get_value() == &val) {
                 return node;
             }
         }
@@ -94,7 +94,7 @@ impl<T: Clone + PartialEq> Tree<T> {
 
     pub fn delete_node(&mut self, value: T) {
         self.get_mut_parent_by_val(&value).get_mut_children().retain(|child| {
-            child.get_value().clone().unwrap() != value
+            child.get_value() != &value
         });
     }
 

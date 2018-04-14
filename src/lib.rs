@@ -196,7 +196,7 @@ mod tests {
     #[test]
     fn get_root_tree() {
         let tree = Tree::new(TreeNode::new(0));
-        assert_eq!(tree.get_root().get_value().unwrap(), 0);
+        assert_eq!(tree.get_root().get_value(), &0);
         assert_eq!(tree.get_root().clone(), TreeNode::new(0));
         assert_ne!(
             tree.get_root().clone(),
@@ -316,7 +316,7 @@ mod tests {
                 TreeNode::new_with_children(11, vec![TreeNode::new(76)]),
             ],
         );
-        assert_eq!(tree.get_parent_by_val(1).get_value().unwrap(), 0);
+        assert_eq!(tree.get_parent_by_val(1).get_value(), &0);
         assert_eq!(
             tree.get_parent_by_val(2),
             &TreeNode::new_with_children(
@@ -349,11 +349,10 @@ mod tests {
                 .get(0)
                 .unwrap()
                 .clone()
-                .get_value()
-                .unwrap(),
-            1
+                .get_value(),
+            &1
         );
-        assert_eq!(tree.get_by_val(1).unwrap().get_value().unwrap(), 1);
+        assert_eq!(tree.get_by_val(1).unwrap().get_value(), &1);
         let sub_tree = Tree::new(TreeNode::new(3));
         tree.add_root_sub_tree(sub_tree);
         assert_eq!(tree.get_children().len(), 2);
@@ -362,11 +361,10 @@ mod tests {
                 .get(1)
                 .unwrap()
                 .clone()
-                .get_value()
-                .unwrap(),
-            3
+                .get_value(),
+            &3
         );
-        assert_eq!(tree.get_by_val(3).unwrap().get_value().unwrap(), 3);
+        assert_eq!(tree.get_by_val(3).unwrap().get_value(), &3);
     }
 
     #[test]

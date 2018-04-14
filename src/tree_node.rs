@@ -2,12 +2,12 @@ use tree::Tree;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct TreeNode<T> {
-    value: Option<T>,
+    value: T,
     children: Vec<TreeNode<T>>,
 }
 
 impl<T: PartialEq + Clone> TreeNode<T> {
-    pub fn get_value(&self) -> &Option<T> {
+    pub fn get_value(&self) -> &T {
         &self.value
     }
 
@@ -21,14 +21,14 @@ impl<T: PartialEq + Clone> TreeNode<T> {
 
     pub fn new(value: T) -> TreeNode<T> {
         TreeNode {
-            value: Some(value),
+            value,
             children: vec![],
         }
     }
 
     pub fn new_with_children(value: T, children: Vec<TreeNode<T>>) -> TreeNode<T> {
         TreeNode {
-            value: Some(value),
+            value,
             children,
         }
     }
@@ -39,7 +39,7 @@ impl<T: PartialEq + Clone> TreeNode<T> {
 
     pub fn get_mut_by_val(&mut self, value: T) -> Option<&mut TreeNode<T>> {
         for node in self.get_mut_children().iter_mut() {
-            if node.get_value().clone().unwrap() == value {
+            if node.get_value() == &value {
                 return Some(node);
             }
             if !node.get_children().is_empty() {

@@ -73,9 +73,9 @@ impl<T: Clone + PartialEq> Tree<T> {
         None
     }
 
-    pub fn get_parent_by_val(&self, val: T) -> &TreeNode<T> {
+    pub fn get_parent_by_val(&self, val: &T) -> &TreeNode<T> {
         for node in self.nodes(self.get_root()) {
-            if node.get_children().iter().any(|child| child.get_value() == &val) {
+            if node.get_children().iter().any(|child| child.get_value() == val) {
                 return node;
             }
         }
@@ -96,6 +96,16 @@ impl<T: Clone + PartialEq> Tree<T> {
         self.get_mut_parent_by_val(&value).get_mut_children().retain(|child| {
             child.get_value() != &value
         });
+    }
+
+    pub fn get_common_parent_of(&self, value1: &T, value2: &T) -> &TreeNode<T> {
+        let first_parent = self.get_parent_by_val(value1);
+        let second_parent = self.get_parent_by_val(value2);
+        if first_parent == second_parent {
+            return first_parent;
+        } else {
+            return self.get_common_parent_of(first_parent.get_value(), second_parent.get_value());
+        }
     }
 
     pub fn add_root_sub_tree(&mut self, sub_tree: Tree<T>) {

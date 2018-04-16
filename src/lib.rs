@@ -402,7 +402,17 @@ mod tests {
         let mut tree = Tree::new_with_children(0, vec![TreeNode::new(1), TreeNode::new(2)]);
         assert_eq!(tree.get_children().len(), 2);
         tree.get_mut_parent_by_val(&1).get_mut_children().clear();
-        assert!(tree.get_children().is_empty())
+        assert!(tree.get_children().is_empty());
+        let mut tree = Tree::new_with_children(0,
+                                               vec![TreeNode::new_with_children(1,
+                                                                                vec![TreeNode::new(2), TreeNode::new(5)]),
+                                                    TreeNode::new_with_children(3,
+                                                                                vec![TreeNode::new(4), TreeNode::new(6)])
+                                               ],
+        );
+        assert_eq!(tree.get_by_val(3).unwrap().get_children().len(), 2);
+        tree.get_mut_parent_by_val(&6).get_mut_children().clear();
+        assert!(tree.get_by_val(3).unwrap().get_children().is_empty())
     }
 
     #[test]
@@ -421,9 +431,11 @@ mod tests {
     fn get_common_parent_of_two_nodes_tree() {
         let tree = Tree::new_with_children(0,
                                            vec![TreeNode::new_with_children(1,
-                                                                               vec![TreeNode::new(2), TreeNode::new(5)]),
+                                                                            vec![TreeNode::new(2), TreeNode::new(5)]),
                                                 TreeNode::new_with_children(3,
-                                                                               vec![TreeNode::new(4), TreeNode::new(6)])]);
+                                                                            vec![TreeNode::new(4), TreeNode::new(6)])
+                                           ],
+        );
         assert_eq!(tree.get_common_parent_of(&1, &3).get_value(), &0);
         assert_eq!(tree.get_common_parent_of(&2, &4).get_value(), &0);
         assert_eq!(tree.get_common_parent_of(&2, &5).get_value(), &1);

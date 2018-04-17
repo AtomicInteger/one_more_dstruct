@@ -1,4 +1,4 @@
-use tree_node::TreeNode;
+use tree::tree_node::TreeNode;
 
 pub struct Tree<T> {
     root: TreeNode<T>,

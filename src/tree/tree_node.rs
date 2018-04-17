@@ -1,4 +1,4 @@
-use tree::Tree;
+use tree::tree::Tree;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct TreeNode<T> {

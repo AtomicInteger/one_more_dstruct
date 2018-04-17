@@ -1,6 +1,6 @@
 extern crate core;
 
-use graph_node::GraphNode;
+use graph::graph_node::GraphNode;
 
 pub struct Graph<T> {
     node_list: Vec<GraphNode<T>>,

@@ -11,26 +11,24 @@ impl<T: PartialEq + Clone> Graph<T> {
         self.node_list.push(GraphNode::new(value))
     }
 
-    pub fn remove_node(&mut self, value: T) {
-        for (index, node) in self.node_list.clone().iter().enumerate() {
-            if node.get_value().clone() == value {
-                self.node_list.remove(index);
-            }
-        }
+    pub fn remove_node(&mut self, value: &T) {
+        self.node_list.retain(|node| {
+            node.get_value() != value
+        });
     }
 
-    pub fn find(&self, value: T) -> Option<&GraphNode<T>> {
+    pub fn find(&self, value: &T) -> Option<&GraphNode<T>> {
         for node in self.node_list.iter() {
-            if node.get_value().clone() == value {
+            if node.get_value() == value {
                 return Some(node);
             }
         }
         None
     }
 
-    pub fn find_mut(&mut self, value: T) -> Option<&mut GraphNode<T>> {
+    pub fn find_mut(&mut self, value: &T) -> Option<&mut GraphNode<T>> {
         for node in self.node_list.iter_mut() {
-            if node.get_value().clone() == value {
+            if node.get_value() == value {
                 return Some(node);
             }
         }

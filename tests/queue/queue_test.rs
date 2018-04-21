@@ -9,17 +9,24 @@ fn enqueue_and_dequeue() {
     assert_eq!(queue.size(), 3);
     queue.enqueue(4);
     assert_eq!(queue.size(), 4);
+    assert_eq!(queue.get_entry(), &vec![4, 1, 2, 3]);
     queue.enqueue(5);
     assert_eq!(queue.size(), 5);
-    assert_eq!(queue.dequeue().unwrap(), 5);
-    assert_eq!(queue.size(), 4);
-    assert_eq!(queue.dequeue().unwrap(), 4);
-    assert_eq!(queue.size(), 3);
+    assert_eq!(queue.get_entry(), &vec![5, 4, 1, 2, 3]);
     assert_eq!(queue.dequeue().unwrap(), 3);
-    assert_eq!(queue.size(), 2);
+    assert_eq!(queue.get_entry(), &vec![5, 4, 1, 2]);
+    assert_eq!(queue.size(), 4);
     assert_eq!(queue.dequeue().unwrap(), 2);
-    assert_eq!(queue.size(), 1);
+    assert_eq!(queue.get_entry(), &vec![5, 4, 1]);
+    assert_eq!(queue.size(), 3);
     assert_eq!(queue.dequeue().unwrap(), 1);
+    assert_eq!(queue.get_entry(), &vec![5, 4]);
+    assert_eq!(queue.size(), 2);
+    assert_eq!(queue.dequeue().unwrap(), 4);
+    assert_eq!(queue.get_entry(), &vec![5]);
+    assert_eq!(queue.size(), 1);
+    assert_eq!(queue.dequeue().unwrap(), 5);
+    assert_eq!(queue.get_entry(), &vec![]);
     assert!(queue.is_empty());
     assert_eq!(queue.dequeue(), None);
     assert!(queue.is_empty());
@@ -33,7 +40,7 @@ fn enqueue_and_peek() {
     assert_eq!(queue.peek().unwrap(), &1);
     queue.enqueue(2);
     assert_eq!(queue.size(), 2);
-    assert_eq!(queue.peek().unwrap(), &2);
+    assert_eq!(queue.peek().unwrap(), &1);
     assert_eq!(queue.size(), 2);
 }
 

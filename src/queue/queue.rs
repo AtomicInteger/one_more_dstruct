@@ -8,7 +8,7 @@ pub struct Queue<T> {
 
 impl<T> Queue<T> {
     pub fn enqueue(&mut self, value: T) {
-        self.entry.push(value)
+        self.entry.insert(0, value)
     }
 
     pub fn dequeue(&mut self) -> Option<T> {
@@ -55,10 +55,13 @@ mod tests {
         assert_eq!(queue.size(), 3);
         queue.enqueue(4);
         assert_eq!(queue.size(), 4);
+        assert_eq!(queue.get_entry(), &vec![4, 1, 2, 3]);
         queue.enqueue(5);
         assert_eq!(queue.size(), 5);
+        assert_eq!(queue.get_entry(), &vec![5, 4, 1, 2, 3]);
         queue.enqueue(6);
         assert_eq!(queue.size(), 6);
+        assert_eq!(queue.get_entry(), &vec![6, 5, 4, 1, 2, 3]);
     }
 
     #[test]

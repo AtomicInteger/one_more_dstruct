@@ -4,42 +4,86 @@ use self::dstruct::queue::queue::Queue;
 use self::dstruct::vector_based_dstruct::VectorBasedDataStructure;
 
 #[test]
-fn enqueue_queue() {
-    let mut queue = Queue::new();
-    queue.enqueue(1);
-    queue.enqueue(2);
-    queue.enqueue(3);
+fn enqueue_and_dequeue() {
+    let mut queue = Queue::from(vec![1, 2, 3]);
     assert_eq!(queue.size(), 3);
+    queue.enqueue(4);
+    assert_eq!(queue.size(), 4);
+    queue.enqueue(5);
+    assert_eq!(queue.size(), 5);
+    assert_eq!(queue.dequeue().unwrap(), 5);
+    assert_eq!(queue.size(), 4);
+    assert_eq!(queue.dequeue().unwrap(), 4);
+    assert_eq!(queue.size(), 3);
+    assert_eq!(queue.dequeue().unwrap(), 3);
+    assert_eq!(queue.size(), 2);
+    assert_eq!(queue.dequeue().unwrap(), 2);
+    assert_eq!(queue.size(), 1);
+    assert_eq!(queue.dequeue().unwrap(), 1);
+    assert!(queue.is_empty());
+    assert_eq!(queue.dequeue(), None);
+    assert!(queue.is_empty());
 }
 
 #[test]
-fn dequeue_queue() {
-    let mut queue = Queue::from(vec![1, 2, 3]);
-    assert_eq!(queue.dequeue().unwrap(), 3);
+fn enqueue_and_peek() {
+    let mut queue = Queue::new();
+    queue.enqueue(1);
+    assert_eq!(queue.size(), 1);
+    assert_eq!(queue.peek().unwrap(), &1);
+    queue.enqueue(2);
+    assert_eq!(queue.size(), 2);
+    assert_eq!(queue.peek().unwrap(), &2);
     assert_eq!(queue.size(), 2);
 }
 
 #[test]
-fn peek_queue() {
-    let queue = Queue::from(vec![1, 2, 3]);
-    assert_eq!(queue.peek().unwrap().to_owned(), 3);
+fn enqueue_and_clear() {
+    let mut queue = Queue::new();
+    queue.enqueue(1);
+    assert_eq!(queue.size(), 1);
+    queue.enqueue(2);
+    assert_eq!(queue.size(), 2);
+    queue.clear();
+    assert!(queue.is_empty());
+    queue.enqueue(3);
+    queue.enqueue(4);
+    queue.enqueue(5);
     assert_eq!(queue.size(), 3);
+    queue.clear();
+    assert!(queue.is_empty());
 }
 
 #[test]
-fn clear_queue() {
-    let mut not_empty_queue = Queue::from(vec![1, 2, 5]);
-    assert_eq!(not_empty_queue.is_empty(), false);
-    not_empty_queue.clear();
-    assert_eq!(not_empty_queue.is_empty(), true);
-}
-
-#[test]
-fn is_empty_queue() {
-    let not_empty_queue = Queue::from(vec![1, 2, 5]);
-    assert_eq!(not_empty_queue.is_empty(), false);
-    assert_ne!(not_empty_queue.size(), 0);
-    let empty_queue: Queue<i32> = Queue::new();
-    assert_eq!(empty_queue.is_empty(), true);
-    assert_eq!(empty_queue.size(), 0);
+fn dequeue_and_peek() {
+    let mut queue = Queue::from(vec![1, 2, 3, 4, 5, 6]);
+    assert_eq!(queue.size(), 6);
+    assert_eq!(queue.peek().unwrap(), &6);
+    assert_eq!(queue.size(), 6);
+    assert_eq!(queue.dequeue().unwrap(), 6);
+    assert_eq!(queue.size(), 5);
+    assert_eq!(queue.peek().unwrap(), &5);
+    assert_eq!(queue.size(), 5);
+    assert_eq!(queue.dequeue().unwrap(), 5);
+    assert_eq!(queue.size(), 4);
+    assert_eq!(queue.peek().unwrap(), &4);
+    assert_eq!(queue.size(), 4);
+    assert_eq!(queue.dequeue().unwrap(), 4);
+    assert_eq!(queue.size(), 3);
+    assert_eq!(queue.peek().unwrap(), &3);
+    assert_eq!(queue.size(), 3);
+    assert_eq!(queue.dequeue().unwrap(), 3);
+    assert_eq!(queue.size(), 2);
+    assert_eq!(queue.peek().unwrap(), &2);
+    assert_eq!(queue.size(), 2);
+    assert_eq!(queue.dequeue().unwrap(), 2);
+    assert_eq!(queue.size(), 1);
+    assert_eq!(queue.peek().unwrap(), &1);
+    assert_eq!(queue.size(), 1);
+    assert_eq!(queue.dequeue().unwrap(), 1);
+    assert_eq!(queue.size(), 0);
+    assert_eq!(queue.peek(), None);
+    assert_eq!(queue.size(), 0);
+    assert_eq!(queue.dequeue(), None);
+    assert_eq!(queue.size(), 0);
 }

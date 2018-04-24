@@ -45,3 +45,43 @@ impl<T: PartialEq + Clone> Graph<T> {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::Graph;
+
+    #[test]
+    fn add_node() {
+        let mut graph = Graph::new(0);
+        assert_eq!(graph.size(), 1);
+        graph.add_node(1);
+        assert_eq!(graph.size(), 2);
+        graph.add_node(2);
+        assert_eq!(graph.size(), 3);
+    }
+
+    #[test]
+    fn remove_node() {
+        let mut graph = Graph::new(0);
+        assert_eq!(graph.size(), 1);
+        graph.remove_node(&0);
+        assert_eq!(graph.size(), 0);
+    }
+
+    #[test]
+    fn find() {
+        let graph = Graph::new(0);
+        assert_eq!(graph.find(&0).unwrap().get_value(), &0);
+    }
+
+    #[test]
+    fn find_mut() {
+        let mut graph = Graph::new(0);
+        assert!(graph.find(&0).unwrap().get_lines().is_empty());
+        // TODO: Fix adding line to non-existent node
+        graph.find_mut(&0).unwrap().add_line(1);
+        assert_eq!(graph.find(&0).unwrap().get_lines().len(), 1);
+        graph.find_mut(&0).unwrap().add_line(2);
+        assert_eq!(graph.find(&0).unwrap().get_lines().len(), 2);
+    }
+}

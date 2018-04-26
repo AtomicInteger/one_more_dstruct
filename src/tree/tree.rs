@@ -1,24 +1,14 @@
 use tree::tree_node::TreeNode;
 
+#[derive(Clone, PartialEq, Debug)]
 pub struct Tree<T> {
-    root: TreeNode<T>,
+    pub root: TreeNode<T>,
 }
 
 impl<T: Clone + PartialEq> Tree<T> {
-    pub fn get_root(&self) -> &TreeNode<T> {
-        &self.root
-    }
-
-    pub fn get_owned_root(self) -> TreeNode<T> {
-        self.root
-    }
-
-    pub fn get_mut_root(&mut self) -> &mut TreeNode<T> {
-        &mut self.root
-    }
 
     pub fn get_leaves(&self) -> Vec<&TreeNode<T>> {
-        Vec::from(self.search_leaves(self.get_root()))
+        Vec::from(self.search_leaves(&self.root))
     }
 
     pub fn nodes<'a>(&'a self, parent_node: &'a TreeNode<T>) -> Vec<&'a TreeNode<T>> {
@@ -34,7 +24,7 @@ impl<T: Clone + PartialEq> Tree<T> {
     }
 
     pub fn get_children(&self) -> &Vec<TreeNode<T>> {
-        self.get_root().get_children()
+        self.root.get_children()
     }
 
     fn search_leaves<'a>(&'a self, node: &'a TreeNode<T>) -> Vec<&'a TreeNode<T>> {
@@ -50,7 +40,7 @@ impl<T: Clone + PartialEq> Tree<T> {
     }
 
     pub fn get_by_val(&self, value: T) -> Option<&TreeNode<T>> {
-        for node in self.nodes(self.get_root()) {
+        for node in self.nodes(&self.root) {
             if node.get_value() == &value {
                 return Some(node);
             }
@@ -59,10 +49,10 @@ impl<T: Clone + PartialEq> Tree<T> {
     }
 
     pub fn get_mut_by_val(&mut self, value: T) -> Option<&mut TreeNode<T>> {
-        if self.get_root().get_value() == &value {
-            return Some(self.get_mut_root());
+        if self.root.get_value() == &value {
+            return Some(&mut self.root);
         }
-        for node in self.get_mut_root().get_mut_children().iter_mut() {
+        for node in self.root.get_mut_children().iter_mut() {
             if node.get_value().clone() == value {
                 return Some(node);
             }
@@ -74,7 +64,7 @@ impl<T: Clone + PartialEq> Tree<T> {
     }
 
     pub fn get_parent_by_val(&self, val: &T) -> &TreeNode<T> {
-        for node in self.nodes(self.get_root()) {
+        for node in self.nodes(&self.root) {
             if node.get_children().iter().any(|child| child.get_value() == val) {
                 return node;
             }
@@ -83,13 +73,13 @@ impl<T: Clone + PartialEq> Tree<T> {
     }
 
     pub fn get_mut_parent_by_val(&mut self, value: &T) -> &mut TreeNode<T> {
-        if self.get_root().get_value() == value {
-            return self.get_mut_root();
+        if self.root.get_value() == value {
+            return &mut self.root;
         }
         if self.get_children().iter().any(|root_child| root_child.get_value() == value) {
-            return self.get_mut_root();
+            return &mut self.root;
         }
-        for child in self.get_mut_root().get_mut_children().iter_mut() {
+        for child in self.root.get_mut_children().iter_mut() {
             if !child.get_mut_parent_by_val(value).is_none() {
                 return child;
             }
@@ -114,7 +104,7 @@ impl<T: Clone + PartialEq> Tree<T> {
     }
 
     pub fn add_root_sub_tree(&mut self, sub_tree: Tree<T>) {
-        self.get_mut_root().get_mut_children().push(sub_tree.get_owned_root());
+        self.root.get_mut_children().push(sub_tree.root);
     }
 
     pub fn new(root: TreeNode<T>) -> Tree<T> {

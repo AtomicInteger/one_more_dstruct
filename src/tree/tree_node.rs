@@ -34,7 +34,7 @@ impl<T: PartialEq + Clone> TreeNode<T> {
     }
 
     pub fn add_sub_tree(&mut self, sub_tree: Tree<T>) {
-        self.get_mut_children().push(sub_tree.get_owned_root());
+        self.get_mut_children().push(sub_tree.root);
     }
 
     pub fn get_mut_by_val(&mut self, value: T) -> Option<&mut TreeNode<T>> {

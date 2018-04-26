@@ -4,19 +4,6 @@ use self::dstruct::tree::tree::Tree;
 use self::dstruct::tree::tree_node::TreeNode;
 
 #[test]
-fn get_root_tree() {
-    let tree = Tree::new(TreeNode::new(0));
-    assert_eq!(tree.get_root().get_value(), &0);
-    assert_eq!(tree.get_root().clone(), TreeNode::new(0));
-    assert_ne!(
-        tree.get_root().clone(),
-        TreeNode::new_with_children(0, vec![TreeNode::new(0)])
-    );
-    assert!(tree.get_root().get_children().is_empty());
-    assert!(tree.get_children().is_empty());
-}
-
-#[test]
 fn get_leaves_tree() {
     let tree = Tree::new_with_children(1, vec![TreeNode::new(0), TreeNode::new(2)]);
     assert_eq!(tree.get_leaves(), vec![&TreeNode::new(0), &TreeNode::new(2)]);
@@ -181,11 +168,11 @@ fn add_root_sub_tree() {
 fn add_sub_tree() {
     let mut tree = Tree::new_with_children(0, vec![TreeNode::new_with_children(1, vec![TreeNode::new(2)])]);
     let sub_tree = Tree::new(TreeNode::new(10));
-    assert_eq!(tree.nodes(tree.get_root()).len(), 4);
+    assert_eq!(tree.nodes(&tree.root).len(), 4);
     assert!(tree.get_by_val(2).unwrap().get_children().is_empty());
-    tree.get_mut_root().add_sub_tree(sub_tree);
-    assert_eq!(tree.nodes(tree.get_root()).len(), 5);
-    assert!(tree.get_root().get_children().contains(&TreeNode::new(10)));
+    tree.root.add_sub_tree(sub_tree);
+    assert_eq!(tree.nodes(&tree.root).len(), 5);
+    assert!(tree.root.get_children().contains(&TreeNode::new(10)));
 }
 
 #[test]

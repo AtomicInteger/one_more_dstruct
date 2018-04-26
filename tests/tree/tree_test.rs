@@ -30,37 +30,6 @@ fn get_leaves_tree() {
 }
 
 #[test]
-fn nodes_tree() {
-    let tree = Tree::new_with_children(
-        1,
-        vec![
-            TreeNode::new_with_children(0, vec![TreeNode::new(10), TreeNode::new(-1)]),
-            TreeNode::new(2),
-        ],
-    );
-    let mut all_nodes = vec![];
-    for node in tree.get_children() {
-        all_nodes.extend(tree.nodes(&node).iter().cloned());
-    }
-    assert_eq!(all_nodes.len(), 4);
-    assert!(all_nodes.contains(&&TreeNode::new(-1)));
-    assert!(all_nodes.contains(&&TreeNode::new(10)));
-    assert!(all_nodes.contains(&&TreeNode::new(2)));
-    assert!(all_nodes.contains(&&TreeNode::new_with_children(
-        0,
-        vec![TreeNode::new(10), TreeNode::new(-1)],
-    )));
-    assert_eq!(tree.nodes(&tree.get_children()[0]).len(), 3);
-    assert_eq!(tree.nodes(&tree.get_children()[1]).len(), 1);
-    assert_eq!(
-        tree.nodes(&tree.get_children()[1].clone()),
-        vec![&TreeNode::new(2)]
-    );
-    assert!(!tree.nodes(&tree.get_children()[0].clone())
-        .contains(&&TreeNode::new(2)));
-}
-
-#[test]
 fn get_by_val_tree() {
     let tree = Tree::new_with_children(
         0,
@@ -168,10 +137,10 @@ fn add_root_sub_tree() {
 fn add_sub_tree() {
     let mut tree = Tree::new_with_children(0, vec![TreeNode::new_with_children(1, vec![TreeNode::new(2)])]);
     let sub_tree = Tree::new(TreeNode::new(10));
-    assert_eq!(tree.nodes(&tree.root).len(), 4);
+    assert_eq!(tree.nodes().len(), 3);
     assert!(tree.get_by_val(2).unwrap().get_children().is_empty());
     tree.root.add_sub_tree(sub_tree);
-    assert_eq!(tree.nodes(&tree.root).len(), 5);
+    assert_eq!(tree.nodes().len(), 4);
     assert!(tree.root.get_children().contains(&TreeNode::new(10)));
 }
 

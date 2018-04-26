@@ -8,17 +8,13 @@ pub struct Tree<T> {
 impl<T: Clone + PartialEq> Tree<T> {
 
     pub fn get_leaves(&self) -> Vec<&TreeNode<T>> {
-        Vec::from(self.search_leaves(&self.root))
+        self.search_leaves(&self.root)
     }
 
-    pub fn nodes<'a>(&'a self, parent_node: &'a TreeNode<T>) -> Vec<&'a TreeNode<T>> {
-        let mut all_nodes = vec![parent_node];
-        for node in parent_node.get_children().iter() {
-            all_nodes.push(node);
-            if !node.get_children().is_empty() {
-                let inner_nodes = self.nodes(node);
-                all_nodes.extend(inner_nodes.iter());
-            }
+    pub fn nodes(&self) -> Vec<&TreeNode<T>> {
+        let mut all_nodes = vec![&self.root];
+        for child in self.get_children().iter() {
+            all_nodes.extend(child.nodes());
         }
         all_nodes
     }
@@ -40,7 +36,7 @@ impl<T: Clone + PartialEq> Tree<T> {
     }
 
     pub fn get_by_val(&self, value: T) -> Option<&TreeNode<T>> {
-        for node in self.nodes(&self.root) {
+        for node in self.nodes() {
             if node.get_value() == &value {
                 return Some(node);
             }
@@ -64,7 +60,7 @@ impl<T: Clone + PartialEq> Tree<T> {
     }
 
     pub fn get_parent_by_val(&self, val: &T) -> &TreeNode<T> {
-        for node in self.nodes(&self.root) {
+        for node in self.nodes() {
             if node.get_children().iter().any(|child| child.get_value() == val) {
                 return node;
             }

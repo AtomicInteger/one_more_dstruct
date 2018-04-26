@@ -58,4 +58,12 @@ impl<T: PartialEq + Clone> TreeNode<T> {
         }
         None
     }
+
+    pub fn nodes(&self) -> Vec<&TreeNode<T>> {
+        let mut all_nodes = vec![self];
+        for child in self.get_children().iter() {
+            all_nodes.extend(child.nodes());
+        }
+        all_nodes
+    }
 }

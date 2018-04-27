@@ -35,9 +35,9 @@ impl<T: Clone + PartialEq> Tree<T> {
         result
     }
 
-    pub fn get_by_val(&self, value: T) -> Option<&TreeNode<T>> {
+    pub fn get_by_val(&self, value: &T) -> Option<&TreeNode<T>> {
         for node in self.nodes() {
-            if node.get_value() == &value {
+            if node.get_value() == value {
                 return Some(node);
             }
         }
@@ -49,7 +49,7 @@ impl<T: Clone + PartialEq> Tree<T> {
             return Some(&mut self.root);
         }
         for node in self.root.get_mut_children().iter_mut() {
-            if node.get_value().clone() == value {
+            if node.get_value() == &value {
                 return Some(node);
             }
             if !node.get_children().is_empty() {
@@ -64,6 +64,10 @@ impl<T: Clone + PartialEq> Tree<T> {
             if node.get_children().iter().any(|child| child.get_value() == val) {
                 return node;
             }
+        }
+        // Checking whether it's root
+        if !self.get_by_val(&val).is_none() {
+            return self.get_by_val(&val).unwrap();
         }
         panic!("Cannot get node's parent!");
     }

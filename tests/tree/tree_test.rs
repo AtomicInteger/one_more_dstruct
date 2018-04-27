@@ -43,7 +43,7 @@ fn get_by_val_tree() {
         ],
     );
     assert_eq!(
-        tree.get_by_val(0).unwrap(),
+        tree.get_by_val(&0).unwrap(),
         &TreeNode::new_with_children(
             0,
             vec![
@@ -56,17 +56,17 @@ fn get_by_val_tree() {
             ],
         )
     );
-    assert_eq!(tree.get_by_val(12).unwrap(), &TreeNode::new(12));
-    assert!(tree.get_by_val(12).unwrap().get_children().is_empty());
+    assert_eq!(tree.get_by_val(&12).unwrap(), &TreeNode::new(12));
+    assert!(tree.get_by_val(&12).unwrap().get_children().is_empty());
     assert_eq!(
-        tree.get_by_val(11).unwrap(),
+        tree.get_by_val(&11).unwrap(),
         &TreeNode::new_with_children(11, vec![TreeNode::new(76)])
     );
     assert_eq!(
-        tree.get_by_val(11).unwrap().get_children().to_vec(),
+        tree.get_by_val(&11).unwrap().get_children().to_vec(),
         vec![TreeNode::new(76)]
     );
-    assert!(tree.get_by_val(3).unwrap().get_children().is_empty());
+    assert!(tree.get_by_val(&3).unwrap().get_children().is_empty());
 }
 
 #[test]
@@ -118,7 +118,7 @@ fn add_root_sub_tree() {
             .get_value(),
         &1
     );
-    assert_eq!(tree.get_by_val(1).unwrap().get_value(), &1);
+    assert_eq!(tree.get_by_val(&1).unwrap().get_value(), &1);
     let sub_tree = Tree::new(TreeNode::new(3));
     tree.add_root_sub_tree(sub_tree);
     assert_eq!(tree.get_children().len(), 2);
@@ -130,7 +130,7 @@ fn add_root_sub_tree() {
             .get_value(),
         &3
     );
-    assert_eq!(tree.get_by_val(3).unwrap().get_value(), &3);
+    assert_eq!(tree.get_by_val(&3).unwrap().get_value(), &3);
 }
 
 #[test]
@@ -138,7 +138,7 @@ fn add_sub_tree() {
     let mut tree = Tree::new_with_children(0, vec![TreeNode::new_with_children(1, vec![TreeNode::new(2)])]);
     let sub_tree = Tree::new(TreeNode::new(10));
     assert_eq!(tree.nodes().len(), 3);
-    assert!(tree.get_by_val(2).unwrap().get_children().is_empty());
+    assert!(tree.get_by_val(&2).unwrap().get_children().is_empty());
     tree.root.add_sub_tree(sub_tree);
     assert_eq!(tree.nodes().len(), 4);
     assert!(tree.root.get_children().contains(&TreeNode::new(10)));
@@ -155,12 +155,12 @@ fn check_children_reachability_tree_node() {
 #[test]
 fn check_get_by_val_mutability_tree() {
     let mut tree = Tree::new_with_children(0, vec![TreeNode::new_with_children(1, vec![TreeNode::new(3)]), TreeNode::new(2)]);
-    assert_eq!(tree.get_by_val(1).unwrap().get_children().len(), 1);
+    assert_eq!(tree.get_by_val(&1).unwrap().get_children().len(), 1);
     tree.get_mut_by_val(1).unwrap().get_mut_children().push(TreeNode::new(4));
-    assert_eq!(tree.get_by_val(1).unwrap().get_children().len(), 2);
-    assert_eq!(tree.get_by_val(0).unwrap().get_children().len(), 2);
+    assert_eq!(tree.get_by_val(&1).unwrap().get_children().len(), 2);
+    assert_eq!(tree.get_by_val(&0).unwrap().get_children().len(), 2);
     tree.get_mut_by_val(0).unwrap().get_mut_children().clear();
-    assert_eq!(tree.get_by_val(0).unwrap().get_children().len(), 0);
+    assert_eq!(tree.get_by_val(&0).unwrap().get_children().len(), 0);
 }
 
 #[test]
@@ -176,9 +176,9 @@ fn get_mut_parent_tree() {
                                                                             vec![TreeNode::new(4), TreeNode::new(6)])
                                            ],
     );
-    assert_eq!(tree.get_by_val(3).unwrap().get_children().len(), 2);
+    assert_eq!(tree.get_by_val(&3).unwrap().get_children().len(), 2);
     tree.get_mut_parent_by_val(&6).get_mut_children().clear();
-    assert!(tree.get_by_val(3).unwrap().get_children().is_empty())
+    assert!(tree.get_by_val(&3).unwrap().get_children().is_empty())
 }
 
 #[test]

@@ -37,9 +37,9 @@ impl<T: PartialEq + Clone> TreeNode<T> {
         self.get_mut_children().push(sub_tree.root);
     }
 
-    pub fn get_mut_by_val(&mut self, value: T) -> Option<&mut TreeNode<T>> {
+    pub fn get_mut_by_val(&mut self, value: &T) -> Option<&mut TreeNode<T>> {
         for node in self.get_mut_children().iter_mut() {
-            if node.get_value() == &value {
+            if node.get_value() == value {
                 return Some(node);
             }
             if !node.get_children().is_empty() {
@@ -54,7 +54,9 @@ impl<T: PartialEq + Clone> TreeNode<T> {
             return Some(self);
         }
         for child in self.get_mut_children().iter_mut() {
-            return child.get_mut_parent_by_val(value);
+            if !child.get_children().is_empty() {
+                return child.get_mut_parent_by_val(value);
+            }
         }
         None
     }

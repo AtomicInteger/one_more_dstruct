@@ -69,3 +69,112 @@ impl<T: PartialEq + Clone> TreeNode<T> {
         all_nodes
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::{TreeNode, Tree};
+
+    #[test]
+    fn get_value() {
+        let tree_node = TreeNode::new_with_children(0, vec![TreeNode::new(2)]);
+        assert_eq!(tree_node.get_value(), &0);
+    }
+
+    #[test]
+    fn get_children() {
+        let tree_node = TreeNode::new_with_children(0, vec![
+            TreeNode::new(1), TreeNode::new(2), TreeNode::new(3), TreeNode::new_with_children(4, vec![
+                TreeNode::new(5)
+            ])
+        ]);
+        assert_eq!(tree_node.get_children().len(), 4);
+        assert!(tree_node.get_children().contains(&TreeNode::new(1)));
+        assert!(tree_node.get_children().contains(&TreeNode::new(2)));
+        assert!(tree_node.get_children().contains(&TreeNode::new(3)));
+        assert!(tree_node.get_children().contains(&TreeNode::new_with_children(4, vec![
+            TreeNode::new(5)
+        ])));
+    }
+
+    #[test]
+    fn get_mut_children() {
+        let mut tree_node = TreeNode::new_with_children(0, vec![
+            TreeNode::new(1), TreeNode::new(2), TreeNode::new(3), TreeNode::new_with_children(4, vec![
+                TreeNode::new(5)
+            ])
+        ]);
+        assert_eq!(tree_node.get_children().len(), 4);
+        assert!(!tree_node.get_children().contains(&TreeNode::new(10)));
+        tree_node.get_mut_children().push(TreeNode::new(10));
+        assert_eq!(tree_node.get_children().len(), 5);
+        assert!(tree_node.get_children().contains(&TreeNode::new(10)));
+    }
+
+    #[test]
+    fn add_sub_tree() {
+        let mut tree_node = TreeNode::new_with_children(0, vec![
+            TreeNode::new(1), TreeNode::new(2), TreeNode::new(3), TreeNode::new_with_children(4, vec![
+                TreeNode::new(5)
+            ])
+        ]);
+        let sub_tree = Tree::new_with_children(10, vec![
+            TreeNode::new(11), TreeNode::new(12), TreeNode::new(13)
+        ]);
+        assert_eq!(tree_node.get_children().len(), 4);
+        assert!(!tree_node.get_children().contains(&TreeNode::new_with_children(10, vec![
+            TreeNode::new(11), TreeNode::new(12), TreeNode::new(13)
+        ])));
+        tree_node.add_sub_tree(sub_tree);
+        assert_eq!(tree_node.get_children().len(), 5);
+        assert!(tree_node.get_children().contains(&TreeNode::new_with_children(10, vec![
+            TreeNode::new(11), TreeNode::new(12), TreeNode::new(13)
+        ])));
+    }
+
+    #[test]
+    fn get_mut_by_val() {
+        let mut tree_node = TreeNode::new_with_children(0, vec![
+            TreeNode::new(1), TreeNode::new(2), TreeNode::new(3), TreeNode::new_with_children(4, vec![
+                TreeNode::new(5)
+            ])
+        ]);
+        assert_eq!(tree_node.nodes().len(), 6);
+        assert!(!tree_node.nodes().contains(&&TreeNode::new(10)));
+        tree_node.get_mut_by_val(&1).unwrap().get_mut_children().push(TreeNode::new(10));
+        assert_eq!(tree_node.nodes().len(), 7);
+        assert!(tree_node.nodes().contains(&&TreeNode::new(10)));
+    }
+
+    #[test]
+    fn get_mut_parent_by_val() {
+        let mut tree_node = TreeNode::new_with_children(0, vec![
+            TreeNode::new(1), TreeNode::new(2), TreeNode::new(3)
+        ]);
+        assert_eq!(tree_node.get_children().len(), 3);
+        assert!(!tree_node.get_children().contains(&TreeNode::new(4)));
+        tree_node.get_mut_parent_by_val(&2).unwrap().get_mut_children().push(TreeNode::new(4));
+        assert_eq!(tree_node.get_children().len(), 4);
+        assert!(tree_node.get_children().contains(&TreeNode::new(4)));
+    }
+
+    #[test]
+    fn nodes() {
+        let tree_node = TreeNode::new_with_children(0, vec![
+            TreeNode::new_with_children(1, vec![
+                TreeNode::new(2), TreeNode::new(3)
+            ]),
+            TreeNode::new_with_children(4, vec![
+                TreeNode::new(5), TreeNode::new(6), TreeNode::new(7), TreeNode::new(8)
+            ]),
+            TreeNode::new(9)
+        ]);
+        assert_eq!(tree_node.nodes().len(), 10);
+        assert!(tree_node.nodes().contains(&&TreeNode::new_with_children(1, vec![
+            TreeNode::new(2), TreeNode::new(3)
+        ])));
+        assert!(tree_node.nodes().contains(&&TreeNode::new_with_children(4, vec![
+            TreeNode::new(5), TreeNode::new(6), TreeNode::new(7), TreeNode::new(8)
+        ])));
+        assert!(tree_node.nodes().contains(&&TreeNode::new(9)));
+    }
+}

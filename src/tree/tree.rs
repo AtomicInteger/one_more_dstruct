@@ -123,3 +123,157 @@ impl<T: Clone + PartialEq> Tree<T> {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::Tree;
+    use super::TreeNode;
+
+    #[test]
+    fn get_leaves() {
+        let tree = Tree::new_with_children(0, vec![
+            TreeNode::new_with_children(1, vec![
+                TreeNode::new(2), TreeNode::new(3), TreeNode::new_with_children(4, vec![
+                    TreeNode::new(5)])])]);
+        assert_eq!(tree.get_leaves().len(), 3);
+        assert!(tree.get_leaves().contains(&&TreeNode::new(2)));
+        assert!(tree.get_leaves().contains(&&TreeNode::new(3)));
+        assert!(tree.get_leaves().contains(&&TreeNode::new(5)));
+    }
+
+    #[test]
+    fn nodes() {
+        let tree = Tree::new_with_children(0, vec![
+            TreeNode::new_with_children(1, vec![
+                TreeNode::new(2), TreeNode::new(3), TreeNode::new_with_children(4, vec![
+                    TreeNode::new(5)])])]);
+        assert_eq!(tree.nodes().len(), 6);
+        let tree = Tree::new(TreeNode::new(0));
+        assert_eq!(tree.nodes().len(), 1);
+        let tree = Tree::new_with_children(0, vec![
+            TreeNode::new_with_children(1, vec![
+                TreeNode::new(2), TreeNode::new(10), TreeNode::new(3), TreeNode::new_with_children(4, vec![
+                    TreeNode::new(5)])]),
+            TreeNode::new(6), TreeNode::new(7), TreeNode::new(8), TreeNode::new(9)
+        ]);
+        assert_eq!(tree.nodes().len(), 11);
+    }
+
+    #[test]
+    fn get_children() {
+        let tree = Tree::new_with_children(0, vec![
+            TreeNode::new(1), TreeNode::new(2), TreeNode::new(3), TreeNode::new(4)
+        ]);
+        assert_eq!(tree.get_children().len(), 4);
+        assert_eq!(tree.get_children(), &vec![TreeNode::new(1), TreeNode::new(2), TreeNode::new(3), TreeNode::new(4)]);
+        let tree = Tree::new_with_children(0, vec![
+            TreeNode::new(1), TreeNode::new(2)
+        ]);
+        assert_eq!(tree.get_children().len(), 2);
+        assert_eq!(tree.get_children(), &vec![TreeNode::new(1), TreeNode::new(2)]);
+    }
+
+    #[test]
+    fn search_leaves() {
+        let tree = Tree::new_with_children(0, vec![
+            TreeNode::new_with_children(1, vec![
+                TreeNode::new(2), TreeNode::new(3), TreeNode::new_with_children(4, vec![
+                    TreeNode::new(5)])])]);
+        assert_eq!(tree.search_leaves(&tree.root).len(), 3);
+        assert_eq!(tree.search_leaves(&tree.get_by_val(&1).unwrap()).len(), 3);
+        assert_eq!(tree.search_leaves(&tree.get_by_val(&4).unwrap()).len(), 1);
+    }
+
+    #[test]
+    fn get_by_val() {
+        let tree = Tree::new_with_children(0, vec![
+            TreeNode::new_with_children(1, vec![
+                TreeNode::new(2), TreeNode::new(3), TreeNode::new_with_children(4, vec![
+                    TreeNode::new(5)])])]);
+        assert_eq!(tree.get_by_val(&0).unwrap().get_children().len(), 1);
+        assert_eq!(tree.get_by_val(&1).unwrap().get_children().len(), 3);
+        assert_eq!(tree.get_by_val(&4).unwrap().get_children().len(), 1);
+        assert_eq!(tree.get_by_val(&5).unwrap().get_children().len(), 0);
+    }
+
+    #[test]
+    fn get_mut_by_val() {
+        let mut tree = Tree::new_with_children(0, vec![
+            TreeNode::new_with_children(1, vec![
+                TreeNode::new(2), TreeNode::new(3), TreeNode::new_with_children(4, vec![
+                    TreeNode::new(5)])])]);
+        assert_eq!(tree.get_by_val(&5).unwrap().get_children().len(), 0);
+        tree.get_mut_by_val(&5).unwrap().get_mut_children().push(TreeNode::new(6));
+        assert_eq!(tree.get_by_val(&5).unwrap().get_children().len(), 1);
+        tree.get_mut_by_val(&5).unwrap().get_mut_children().push(TreeNode::new(7));
+        tree.get_mut_by_val(&5).unwrap().get_mut_children().push(TreeNode::new(8));
+        assert_eq!(tree.get_by_val(&5).unwrap().get_children().len(), 3);
+    }
+
+    #[test]
+    fn get_parent_by_val() {
+        let tree = Tree::new_with_children(0, vec![
+            TreeNode::new_with_children(1, vec![
+                TreeNode::new(2), TreeNode::new(3), TreeNode::new_with_children(4, vec![
+                    TreeNode::new(5)])])]);
+        assert_eq!(tree.get_parent_by_val(&5).get_value(), &4);
+        assert_eq!(tree.get_parent_by_val(&4).get_value(), &1);
+        assert_eq!(tree.get_parent_by_val(&3).get_value(), &1);
+        assert_eq!(tree.get_parent_by_val(&2).get_value(), &1);
+        assert_eq!(tree.get_parent_by_val(&1).get_value(), &0);
+    }
+
+    #[test]
+    fn get_mut_parent_by_val() {
+        let mut tree = Tree::new_with_children(0, vec![
+            TreeNode::new_with_children(1, vec![
+                TreeNode::new(2), TreeNode::new(3), TreeNode::new_with_children(4, vec![TreeNode::new(5)])])]);
+        assert_eq!(tree.get_by_val(&4).unwrap().get_children().len(), 1);
+        tree.get_mut_parent_by_val(&5).get_mut_children().push(TreeNode::new(6));
+        assert_eq!(tree.get_by_val(&4).unwrap().get_children().len(), 2);
+        assert!(tree.get_by_val(&4).unwrap().get_children().contains(&&TreeNode::new(6)));
+        tree.get_mut_parent_by_val(&5).get_mut_children().clear();
+        assert_eq!(tree.get_by_val(&4).unwrap().get_children().len(), 0);
+    }
+
+    #[test]
+    fn delete_node() {
+        let mut tree = Tree::new_with_children(0, vec![
+            TreeNode::new_with_children(1, vec![
+                TreeNode::new(2), TreeNode::new(3), TreeNode::new_with_children(4, vec![TreeNode::new(5)])])]);
+        assert_eq!(tree.get_by_val(&1).unwrap().get_children().len(), 3);
+        assert!(tree.get_by_val(&1).unwrap().get_children().contains(&TreeNode::new(2)));
+        tree.delete_node(2);
+        assert_eq!(tree.get_by_val(&1).unwrap().get_children().len(), 2);
+        assert!(!tree.get_by_val(&1).unwrap().get_children().contains(&TreeNode::new(2)));
+    }
+
+    #[test]
+    fn get_common_parent_of() {
+        let tree = Tree::new_with_children(0, vec![
+            TreeNode::new_with_children(1, vec![
+                TreeNode::new(2), TreeNode::new(3), TreeNode::new_with_children(4, vec![
+                    TreeNode::new(5)])]),
+            TreeNode::new_with_children(10, vec![
+                TreeNode::new(11)])
+        ]);
+        assert_eq!(tree.get_parent_by_val(&5).get_value(), &4);
+        assert_eq!(tree.get_common_parent_of(&2, &3).get_value(), &1);
+        assert_eq!(tree.get_common_parent_of(&5, &11).get_value(), &0);
+        assert_eq!(tree.get_common_parent_of(&5, &4).get_value(), &1);
+    }
+
+    #[test]
+    fn add_root_sub_tree() {
+        let mut tree = Tree::new_with_children(0, vec![
+            TreeNode::new(1), TreeNode::new(2), TreeNode::new(3), TreeNode::new_with_children(4, vec![
+                TreeNode::new(10)
+            ])
+        ]);
+        assert_eq!(tree.get_children().len(), 4);
+        assert!(!tree.get_children().contains(&TreeNode::new_with_children(13, vec![TreeNode::new(14)])));
+        tree.add_root_sub_tree(Tree::new_with_children(13, vec![TreeNode::new(14)]));
+        assert_eq!(tree.get_children().len(), 5);
+        assert!(tree.get_children().contains(&TreeNode::new_with_children(13, vec![TreeNode::new(14)])));
+    }
+}

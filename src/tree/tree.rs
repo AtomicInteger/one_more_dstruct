@@ -97,6 +97,11 @@ impl<T: Clone + PartialEq> Tree<T> {
     pub fn get_common_parent_of(&self, value1: &T, value2: &T) -> &TreeNode<T> {
         let first_parent = self.get_parent_by_val(value1);
         let second_parent = self.get_parent_by_val(value2);
+        if first_parent.get_value() == value2 {
+            return second_parent;
+        } else if second_parent.get_value() == value1 {
+            return first_parent;
+        }
         if first_parent == second_parent {
             return first_parent;
         } else {
